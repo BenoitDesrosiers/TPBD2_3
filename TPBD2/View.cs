@@ -8,6 +8,8 @@ namespace TPBD2
 {
     class View
     {
+        //TODO: changer les public pour protected
+
         public void AfficheListe(List<string> lignesMenu)
         {
             foreach(string ligne in lignesMenu)
@@ -40,13 +42,15 @@ namespace TPBD2
             return reponse;
         }
 
-        public char InputChar(string question, List<char> choixValides, bool majuscule = false)
+        public char InputChar(string question, List<char> choixValides, bool majuscule = false, char defaut = ' ')
         {
             string c_choix;
             do
             {
-                Console.Write(question);
+                Console.Write(question+" ("+defaut+")");
                 c_choix = Console.ReadLine();
+                if(c_choix == "")
+                    { c_choix = defaut.ToString(); }
                 if(majuscule) c_choix=c_choix.ToUpper();
             } while (!choixValides.Contains(c_choix[0]));
 
@@ -66,21 +70,32 @@ namespace TPBD2
 
         }
 
-        public DateTime InputDate(string question)
+        public DateTime InputDate(string question, DateTime dateNaissanceDefault = default(DateTime))
         {
             string reponse;
             DateTime reponseDate = DateTime.Now;
             bool bonneDate;
+            if (dateNaissanceDefault.Equals(default(DateTime)))
+            {
+                dateNaissanceDefault = DateTime.Now;
+            }
 
             do
             {
                 
-                Console.Write(question);
+                Console.Write(question+" ("+dateNaissanceDefault.Date+")");
                 reponse = Console.ReadLine();
                 bonneDate = true;
                 try
                 {
-                    reponseDate = Convert.ToDateTime(reponse);
+                    if (reponse == "")
+                    {
+                        reponseDate = dateNaissanceDefault;
+                    }
+                    else
+                    {
+                        reponseDate = Convert.ToDateTime(reponse);
+                    }
                 }
                 catch (Exception)
                 {

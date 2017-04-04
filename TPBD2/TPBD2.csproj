@@ -58,6 +58,7 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="AnimalCtrl.cs" />
+    <Compile Include="AnimalView.cs" />
     <Compile Include="Espece.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
