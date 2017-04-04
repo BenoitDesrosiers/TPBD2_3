@@ -1,0 +1,356 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TPBD2e7654321Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Animal">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nom" Type="varchar" MaxLength="40" />
+          <Property Name="EspeceID" Type="int" />
+          <Property Name="Couleur" Type="varchar" MaxLength="20" />
+          <Property Name="Sexe" Type="varchar" MaxLength="1" />
+          <Property Name="Poids" Type="int" />
+          <Property Name="DateNaissance" Type="date" />
+        </EntityType>
+        <EntityType Name="AnimalProprietaire">
+          <Key>
+            <PropertyRef Name="AnimalID" />
+            <PropertyRef Name="ProprietaireID" />
+          </Key>
+          <Property Name="AnimalID" Type="int" Nullable="false" />
+          <Property Name="ProprietaireID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Espece">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nom" Type="varchar" MaxLength="40" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Medicament">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nom" Type="varchar" MaxLength="40" />
+          <Property Name="DosageUnitaire" Type="varchar" MaxLength="100" />
+          <Property Name="PrixUnitaire" Type="float" />
+        </EntityType>
+        <EntityType Name="Proprietaire">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nom" Type="varchar" MaxLength="40" />
+          <Property Name="Adresse" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Soin">
+          <Key>
+            <PropertyRef Name="AnimalID" />
+            <PropertyRef Name="MedicamentID" />
+          </Key>
+          <Property Name="AnimalID" Type="int" Nullable="false" />
+          <Property Name="MedicamentID" Type="int" Nullable="false" />
+          <Property Name="Quantite" Type="int" />
+        </EntityType>
+        <Association Name="FK_AnimalProprietaire_AnimalID">
+          <End Role="Animal" Type="Self.Animal" Multiplicity="1" />
+          <End Role="AnimalProprietaire" Type="Self.AnimalProprietaire" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Animal">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AnimalProprietaire">
+              <PropertyRef Name="AnimalID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AnimalProprietaire_ProprietaireID">
+          <End Role="Proprietaire" Type="Self.Proprietaire" Multiplicity="1" />
+          <End Role="AnimalProprietaire" Type="Self.AnimalProprietaire" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proprietaire">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AnimalProprietaire">
+              <PropertyRef Name="ProprietaireID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Animaux_EspeceID">
+          <End Role="Espece" Type="Self.Espece" Multiplicity="0..1" />
+          <End Role="Animal" Type="Self.Animal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Espece">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Animal">
+              <PropertyRef Name="EspeceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Soin_AnimalID">
+          <End Role="Animal" Type="Self.Animal" Multiplicity="1" />
+          <End Role="Soin" Type="Self.Soin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Animal">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Soin">
+              <PropertyRef Name="AnimalID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Soin_MedicamentID">
+          <End Role="Medicament" Type="Self.Medicament" Multiplicity="1" />
+          <End Role="Soin" Type="Self.Soin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medicament">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Soin">
+              <PropertyRef Name="MedicamentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TPBD2e7654321ModelStoreContainer">
+          <EntitySet Name="Animal" EntityType="Self.Animal" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AnimalProprietaire" EntityType="Self.AnimalProprietaire" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Espece" EntityType="Self.Espece" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Medicament" EntityType="Self.Medicament" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Proprietaire" EntityType="Self.Proprietaire" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Soin" EntityType="Self.Soin" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_AnimalProprietaire_AnimalID" Association="Self.FK_AnimalProprietaire_AnimalID">
+            <End Role="Animal" EntitySet="Animal" />
+            <End Role="AnimalProprietaire" EntitySet="AnimalProprietaire" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AnimalProprietaire_ProprietaireID" Association="Self.FK_AnimalProprietaire_ProprietaireID">
+            <End Role="Proprietaire" EntitySet="Proprietaire" />
+            <End Role="AnimalProprietaire" EntitySet="AnimalProprietaire" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Animaux_EspeceID" Association="Self.FK_Animaux_EspeceID">
+            <End Role="Espece" EntitySet="Espece" />
+            <End Role="Animal" EntitySet="Animal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Soin_AnimalID" Association="Self.FK_Soin_AnimalID">
+            <End Role="Animal" EntitySet="Animal" />
+            <End Role="Soin" EntitySet="Soin" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Soin_MedicamentID" Association="Self.FK_Soin_MedicamentID">
+            <End Role="Medicament" EntitySet="Medicament" />
+            <End Role="Soin" EntitySet="Soin" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TPBD2e7654321Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Animal">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nom" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="EspeceID" Type="Int32" />
+          <Property Name="Couleur" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Sexe" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="Poids" Type="Int32" />
+          <Property Name="DateNaissance" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Espece" Relationship="Self.FK_Animaux_EspeceID" FromRole="Animal" ToRole="Espece" />
+          <NavigationProperty Name="Soins" Relationship="Self.FK_Soin_AnimalID" FromRole="Animal" ToRole="Soin" />
+          <NavigationProperty Name="Proprietaires" Relationship="Self.AnimalProprietaire" FromRole="Animal" ToRole="Proprietaire" />
+        </EntityType>
+        <EntityType Name="Espece">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nom" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Animals" Relationship="Self.FK_Animaux_EspeceID" FromRole="Espece" ToRole="Animal" />
+        </EntityType>
+        <EntityType Name="Medicament">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nom" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="DosageUnitaire" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PrixUnitaire" Type="Double" />
+          <NavigationProperty Name="Soins" Relationship="Self.FK_Soin_MedicamentID" FromRole="Medicament" ToRole="Soin" />
+        </EntityType>
+        <EntityType Name="Proprietaire">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nom" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="Adresse" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Animals" Relationship="Self.AnimalProprietaire" FromRole="Proprietaire" ToRole="Animal" />
+        </EntityType>
+        <EntityType Name="Soin">
+          <Key>
+            <PropertyRef Name="AnimalID" />
+            <PropertyRef Name="MedicamentID" />
+          </Key>
+          <Property Name="AnimalID" Type="Int32" Nullable="false" />
+          <Property Name="MedicamentID" Type="Int32" Nullable="false" />
+          <Property Name="Quantite" Type="Int32" />
+          <NavigationProperty Name="Animal" Relationship="Self.FK_Soin_AnimalID" FromRole="Soin" ToRole="Animal" />
+          <NavigationProperty Name="Medicament" Relationship="Self.FK_Soin_MedicamentID" FromRole="Soin" ToRole="Medicament" />
+        </EntityType>
+        <Association Name="FK_Animaux_EspeceID">
+          <End Role="Espece" Type="Self.Espece" Multiplicity="0..1" />
+          <End Role="Animal" Type="Self.Animal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Espece">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Animal">
+              <PropertyRef Name="EspeceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Soin_AnimalID">
+          <End Role="Animal" Type="Self.Animal" Multiplicity="1" />
+          <End Role="Soin" Type="Self.Soin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Animal">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Soin">
+              <PropertyRef Name="AnimalID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Soin_MedicamentID">
+          <End Role="Medicament" Type="Self.Medicament" Multiplicity="1" />
+          <End Role="Soin" Type="Self.Soin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medicament">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Soin">
+              <PropertyRef Name="MedicamentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AnimalProprietaire">
+          <End Role="Animal" Type="Self.Animal" Multiplicity="*" />
+          <End Role="Proprietaire" Type="Self.Proprietaire" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="TPBD2e7654321Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Animals" EntityType="Self.Animal" />
+          <EntitySet Name="Especes" EntityType="Self.Espece" />
+          <EntitySet Name="Medicaments" EntityType="Self.Medicament" />
+          <EntitySet Name="Proprietaires" EntityType="Self.Proprietaire" />
+          <EntitySet Name="Soins" EntityType="Self.Soin" />
+          <AssociationSet Name="FK_Animaux_EspeceID" Association="Self.FK_Animaux_EspeceID">
+            <End Role="Espece" EntitySet="Especes" />
+            <End Role="Animal" EntitySet="Animals" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Soin_AnimalID" Association="Self.FK_Soin_AnimalID">
+            <End Role="Animal" EntitySet="Animals" />
+            <End Role="Soin" EntitySet="Soins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Soin_MedicamentID" Association="Self.FK_Soin_MedicamentID">
+            <End Role="Medicament" EntitySet="Medicaments" />
+            <End Role="Soin" EntitySet="Soins" />
+          </AssociationSet>
+          <AssociationSet Name="AnimalProprietaire" Association="Self.AnimalProprietaire">
+            <End Role="Animal" EntitySet="Animals" />
+            <End Role="Proprietaire" EntitySet="Proprietaires" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TPBD2e7654321ModelStoreContainer" CdmEntityContainer="TPBD2e7654321Entities">
+          <EntitySetMapping Name="Animals">
+            <EntityTypeMapping TypeName="TPBD2e7654321Model.Animal">
+              <MappingFragment StoreEntitySet="Animal">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="EspeceID" ColumnName="EspeceID" />
+                <ScalarProperty Name="Couleur" ColumnName="Couleur" />
+                <ScalarProperty Name="Sexe" ColumnName="Sexe" />
+                <ScalarProperty Name="Poids" ColumnName="Poids" />
+                <ScalarProperty Name="DateNaissance" ColumnName="DateNaissance" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Especes">
+            <EntityTypeMapping TypeName="TPBD2e7654321Model.Espece">
+              <MappingFragment StoreEntitySet="Espece">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Medicaments">
+            <EntityTypeMapping TypeName="TPBD2e7654321Model.Medicament">
+              <MappingFragment StoreEntitySet="Medicament">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="DosageUnitaire" ColumnName="DosageUnitaire" />
+                <ScalarProperty Name="PrixUnitaire" ColumnName="PrixUnitaire" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Proprietaires">
+            <EntityTypeMapping TypeName="TPBD2e7654321Model.Proprietaire">
+              <MappingFragment StoreEntitySet="Proprietaire">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Adresse" ColumnName="Adresse" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Soins">
+            <EntityTypeMapping TypeName="TPBD2e7654321Model.Soin">
+              <MappingFragment StoreEntitySet="Soin">
+                <ScalarProperty Name="AnimalID" ColumnName="AnimalID" />
+                <ScalarProperty Name="MedicamentID" ColumnName="MedicamentID" />
+                <ScalarProperty Name="Quantite" ColumnName="Quantite" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="AnimalProprietaire" TypeName="TPBD2e7654321Model.AnimalProprietaire" StoreEntitySet="AnimalProprietaire">
+            <EndProperty Name="Animal">
+              <ScalarProperty Name="ID" ColumnName="AnimalID" />
+            </EndProperty>
+            <EndProperty Name="Proprietaire">
+              <ScalarProperty Name="ID" ColumnName="ProprietaireID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a0391ab87cfe4d1887cff8ca8c408b41" Name="Diagram1">
+        <EntityTypeShape EntityType="TPBD2e7654321Model.Animal" Width="1.5" PointX="3" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TPBD2e7654321Model.Espece" Width="1.5" PointX="0.75" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="TPBD2e7654321Model.Medicament" Width="1.5" PointX="3" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TPBD2e7654321Model.Proprietaire" Width="1.5" PointX="5.25" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TPBD2e7654321Model.Soin" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="TPBD2e7654321Model.FK_Animaux_EspeceID" ManuallyRouted="false" />
+        <AssociationConnector Association="TPBD2e7654321Model.FK_Soin_AnimalID" ManuallyRouted="false" />
+        <AssociationConnector Association="TPBD2e7654321Model.FK_Soin_MedicamentID" ManuallyRouted="false" />
+        <AssociationConnector Association="TPBD2e7654321Model.AnimalProprietaire" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
