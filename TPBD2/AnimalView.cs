@@ -17,7 +17,9 @@ namespace TPBD2
             _ctrl = ctrl;
         }
 
-
+        /// <summary>
+        /// Menu principal pour les Animaux
+        /// </summary>
         public void Index()
         {
             List<String> optionsMenu = new List<string>();
