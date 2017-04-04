@@ -38,8 +38,8 @@ namespace TPBD2
                         switch (choix)
                         {
                             case 1:
-                                AnimalCtrl animalCtrl = new AnimalCtrl();
-                                animalCtrl.MenuPrincipal(context);
+                                AnimalCtrl animalCtrl = new AnimalCtrl(context);
+                                animalCtrl.Index();
                                 break;
                             case '2':
                                 
