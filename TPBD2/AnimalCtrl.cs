@@ -95,7 +95,7 @@ namespace TPBD2
         public void ListeProprietaires()
         {
             AnimalView view = new AnimalView(_context, this);
-            view.ListeProprietaires();
+            view.Liste();
         }
        
     }

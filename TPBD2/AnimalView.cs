@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.Collections.Specialized; // pour ListDictionnary
+using System.Collections; // pour DictionnaryEntry
 namespace TPBD2
 {
     class AnimalView : View
@@ -103,6 +105,7 @@ namespace TPBD2
 
         /// <summary>
         /// Demande quel animal effacer
+        /// [répond à 1d1, 1d2, 1d3]
         /// </summary>
         /// <returns>l'Animal à effacer, ou null</returns>
         public Animal Effacer()
@@ -167,7 +170,7 @@ namespace TPBD2
             do
             {
                 AfficheListe(optionsMenu);
-                choix = ChoisirOption(new List<int> { 0, 1, 2, 3 });
+                choix = ChoisirOption(new List<int> { 0, 1, 2, 3, 4 });
 
 
                 if (choix != 0)
@@ -182,6 +185,9 @@ namespace TPBD2
                             break;
                         case 3:
                             EnleverProprietaires(animal);
+                            break;
+                        case 4:
+                            AjouterSoins(animal);
                             break;
                     }
 
@@ -203,6 +209,7 @@ namespace TPBD2
         /// <summary>
         /// Change les attributs simple de Animal
         /// Fournit des valeurs par défaut
+        /// [répond à 1c1]
         /// </summary>
         /// <param name="animal">l'animal a modifier</param>
         private void ModifierAttributs(Animal animal)
@@ -283,7 +290,7 @@ namespace TPBD2
 
         /// <summary>
         /// Dissociation d'un ou de plusieurs propriétaires d'un animal
-        /// [répond à la question 1d1, 1d2, 1d3
+        /// [répond à la question 1c2]
         /// </summary>
         /// <param name="animal"></param>
         private void EnleverProprietaires(Animal animal)
@@ -339,6 +346,61 @@ namespace TPBD2
                 }
             }
         }
+
+        /// <summary>
+        /// Association d'un ou de plusieurs soins à un animal
+        /// [ répond à la question 1a et 1c2 ]
+        /// </summary>
+        /// <param name="animal">l'animal à modifier</param>
+        private void AjouterSoins(Animal animal)
+        {
+            var soins = (from m in _context.Medicaments
+                         where !(from s in _context.Soins
+                                 where s.AnimalID == animal.ID
+                                 select s.MedicamentID).Contains(m.ID)
+                         select m);
+            List<string> medicamentsMenu = new List<string>();
+            List<int> medicamentsIDValide = new List<int>();
+
+            Console.WriteLine("Choisisez un id de médicament");
+            foreach (var soin in soins)
+            {
+                medicamentsMenu.Add(string.Format("id: {0} Nom: {1} Prix: {2}", soin.ID, soin.Nom, soin.Nom));
+                medicamentsIDValide.Add(soin.ID);
+            }
+            medicamentsMenu.Add("0 pour arrêter");
+            medicamentsIDValide.Add(0);
+            
+            Hashtable listeMedicamentIDetQte = new Hashtable();
+            int medicamentChoisit;
+            do
+            {
+                AfficheListe(medicamentsMenu);
+                medicamentChoisit = ChoisirOption(medicamentsIDValide);
+                if (medicamentChoisit != 0)
+                {
+                    int qte = InputInt("Quel quantité? : ", 1);
+                    listeMedicamentIDetQte.Add(medicamentChoisit, qte); //TODO: enlever les médicaments déjà choisi de la liste. 
+                    Console.WriteLine("et une autre médicament ...");
+                };
+
+            } while (medicamentChoisit != 0);
+
+            foreach (DictionaryEntry idMedicamentEtQte in listeMedicamentIDetQte)
+            {
+                Soin soin = new Soin();
+                soin.Animal = animal;
+                soin.MedicamentID = (int)idMedicamentEtQte.Key;
+                soin.Quantite = (int) idMedicamentEtQte.Value;
+                animal.Soins.Add(soin);
+            }
+        }
+
+        private void EnleverSoin(Animal animal)
+        {
+
+        }
+
 
         //
         // Rapports
@@ -396,7 +458,7 @@ namespace TPBD2
         /// [répond à la question 1b puisque la table Animal à une relation
         /// plusieurs à plusieurs avec Propriétaire.] 
         /// </summary>
-        public void ListeProprietaires()
+        public void Liste()
         {
             Console.WriteLine("Pour quel animal désirez-vous un rapport ");
             int animalIdChoisi = ChoisirAnimal(true);
