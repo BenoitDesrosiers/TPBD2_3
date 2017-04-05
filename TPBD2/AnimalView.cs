@@ -78,33 +78,7 @@ namespace TPBD2
         {
             Animal nouvelAnimal = new Animal();
 
-            // Nom
-            nouvelAnimal.Nom = InputString("Nom de l'animal: ");
-
-            // Espèce à partir de la liste des espèces [répond à la question 2a ]
-            var especes = (from e in _context.Especes
-                           select (new { e.ID, e.Nom }));
-            List<string> especesMenu = new List<string>();
-            List<int> especesIdValide = new List<int>();
-            foreach (var espece in especes)
-            {
-                especesMenu.Add(string.Format("id: {0} espece: {1}", espece.ID, espece.Nom));
-                especesIdValide.Add(espece.ID);
-            }
-            AfficheListe(especesMenu);
-            nouvelAnimal.Espece = _context.Especes.Find(ChoisirOption(especesIdValide));
-
-            // Couleur
-            nouvelAnimal.Couleur = InputString("Couleur de l'animal: ");
-
-            // Sexe
-            nouvelAnimal.Sexe = Convert.ToString(InputChar("Sexe (M/F): ", new List<char> { 'M', 'F' }, true, 'M'));
-
-            // Poids
-            nouvelAnimal.Poids = InputInt("Poids: ");
-
-            // Date de naissance
-            nouvelAnimal.DateNaissance = InputDate("Date de naissance (AAAA-MM-JJ): ");
+            ModifierAttributs(nouvelAnimal);
 
             // Propriétaire(s)  réponds à la question 1a
             var proprietaires = (from p in _context.Proprietaires
@@ -241,7 +215,7 @@ namespace TPBD2
         }
 
         //
-        // Helpers de modification
+        // Helpers d'ajout et de modification
         //
 
         private void ModifierAttributs(Animal animal)
@@ -261,7 +235,7 @@ namespace TPBD2
                 especesIdValide.Add(espece.ID);
             }
             AfficheListe(especesMenu);
-            animal.Espece = _context.Especes.Find(ChoisirOption(especesIdValide, animal.EspeceID));
+            animal.Espece = _context.Especes.Find(ChoisirOption(especesIdValide, animal.EspeceID != 0 ? animal.EspeceID : (int?)null));
 
             // Couleur
             animal.Couleur = InputString("Couleur de l'animal: ", animal.Couleur);
