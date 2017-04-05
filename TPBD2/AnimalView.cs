@@ -80,38 +80,7 @@ namespace TPBD2
 
             ModifierAttributs(nouvelAnimal);
 
-            // Propriétaire(s)  réponds à la question 1a
-            var proprietaires = (from p in _context.Proprietaires
-                                 select (new { p.ID, p.Nom }));
-            List<string> proprietairesMenu = new List<string>();
-            List<int> proprietairesIdValide = new List<int>();
-
-            Console.WriteLine("Choissisez un id de propriétaire");
-            foreach (var proprietaire in proprietaires)
-            {
-                proprietairesMenu.Add(string.Format("id: {0} Nom: {1}", proprietaire.ID, proprietaire.Nom));
-                proprietairesIdValide.Add(proprietaire.ID);
-            }
-            proprietairesMenu.Add("0 pour arrêter");
-            proprietairesIdValide.Add(0);
-            List<int> listeProprietaire = new List<int>();
-            int proprioChoisit;
-            do
-            {
-                AfficheListe(proprietairesMenu);
-                proprioChoisit = ChoisirOption(proprietairesIdValide);
-                if (proprioChoisit != 0)
-                {
-                    listeProprietaire.Add(proprioChoisit);
-                    Console.WriteLine("et une autre proprietaire ...");
-                };
-
-            } while (proprioChoisit != 0);
-
-            foreach (int idProprio in listeProprietaire)
-            {
-                nouvelAnimal.Proprietaires.Add(_context.Proprietaires.Find(idProprio));
-            }
+            AjouterProprietaires(nouvelAnimal);
 
             // confirmation
             Console.WriteLine("Voulez-vous vraiment ajouter :");
@@ -152,14 +121,22 @@ namespace TPBD2
                 char effacer = InputChar("O/N ", new List<char> { 'O', 'N' }, true);
                 if (effacer.Equals('N'))
                 {
-                    animal = null;
+                    animal = null; //FIXME: animal est suivit par le context. Que cé ca fait de le mettre à null?
                 }
             }
             return animal;
         }
 
+
+        /// <summary>
+        /// Menu pour modifier un animal
+        /// </summary>
+        /// <returns>l'animal qui a été modifié</returns>
         public Animal Modifier()
         {
+            //FIXME: étant donné que le context.remove se fait dans le controlleur, 
+            //      si je retourne voir les changements avant de sortir, ils ne sont pas faits
+            //      exemple: enlever un propriétaire, retourner à enlever, celui enlever la première fois est encore dans la liste. 
             Console.WriteLine("Quel animal désirez-vous modifier?");
             int animalIdChoisi = ChoisirAnimal(true);
             Animal animal = null;
@@ -179,8 +156,11 @@ namespace TPBD2
             optionsMenu.Add("Que désirez-vous changer? ");
 
             optionsMenu.Add("1) Les attributs de l'animal ");
-            optionsMenu.Add("2) Ses propriétaires");
-            optionsMenu.Add("3) Les soins qu'il a recu");
+            optionsMenu.Add("2) Ajouter des propriétaires");
+            optionsMenu.Add("3) Enlever des propriétaires");
+            optionsMenu.Add("4) Ajouter des soins");
+            optionsMenu.Add("5) Enlever des soins");
+
             optionsMenu.Add("0) sortir");
 
             int choix;
@@ -198,10 +178,10 @@ namespace TPBD2
                             ModifierAttributs(animal);
                             break;
                         case 2:
-                            //ModifierProprietaires();
+                            AjouterProprietaires(animal);
                             break;
                         case 3:
-                            //ModifierSoins();
+                            EnleverProprietaires(animal);
                             break;
                     }
 
@@ -218,6 +198,13 @@ namespace TPBD2
         // Helpers d'ajout et de modification
         //
 
+        //TODO: pas clean, le modèle Animal passé en in est modifié en mémoire. Au moins, il est pas sauvegardé dans la BD (ca c'est fait dans le ctrl). 
+
+        /// <summary>
+        /// Change les attributs simple de Animal
+        /// Fournit des valeurs par défaut
+        /// </summary>
+        /// <param name="animal">l'animal a modifier</param>
         private void ModifierAttributs(Animal animal)
         {
 
@@ -250,6 +237,107 @@ namespace TPBD2
             animal.DateNaissance = InputDate("Date de naissance (AAAA-MM-JJ): ", animal.DateNaissance);
 
 
+        }
+
+
+        /// <summary>
+        /// Association d'un ou de plusieurs propriétaires à un animal
+        /// [ répond à la question 1a et 1c2 quand ca vient de ModifierProprietaires]
+        /// </summary>
+        /// <param name="animal">l'animal à modifier</param>
+        private void AjouterProprietaires(Animal animal)
+        {
+            
+            var proprietaires = (from p in _context.Proprietaires
+                                 select (new { p.ID, p.Nom }));
+            List<string> proprietairesMenu = new List<string>();
+            List<int> proprietairesIdValide = new List<int>();
+
+            Console.WriteLine("Choisisez un id de propriétaire");
+            foreach (var proprietaire in proprietaires)
+            {
+                proprietairesMenu.Add(string.Format("id: {0} Nom: {1}", proprietaire.ID, proprietaire.Nom));
+                proprietairesIdValide.Add(proprietaire.ID);
+            }
+            proprietairesMenu.Add("0 pour arrêter");
+            proprietairesIdValide.Add(0);
+            List<int> listeProprietaire = new List<int>();
+            int proprioChoisit;
+            do
+            {
+                AfficheListe(proprietairesMenu);
+                proprioChoisit = ChoisirOption(proprietairesIdValide);
+                if (proprioChoisit != 0)
+                {
+                    listeProprietaire.Add(proprioChoisit);
+                    Console.WriteLine("et une autre proprietaire ...");
+                };
+
+            } while (proprioChoisit != 0);
+
+            foreach (int idProprio in listeProprietaire)
+            {
+                animal.Proprietaires.Add(_context.Proprietaires.Find(idProprio));
+            }
+        }
+
+        /// <summary>
+        /// Dissociation d'un ou de plusieurs propriétaires d'un animal
+        /// [répond à la question 1d1, 1d2, 1d3
+        /// </summary>
+        /// <param name="animal"></param>
+        private void EnleverProprietaires(Animal animal)
+        {
+            var proprietaires = (from p in animal.Proprietaires
+                                 orderby(p.ID)
+                                 select (new { p.ID, p.Nom }));
+            List<string> proprietairesMenu = new List<string>();
+            List<int> proprietairesIdValide = new List<int>();
+
+            Console.WriteLine("Quel propriétaire désirez-vous enlever");
+            foreach (var proprietaire in proprietaires)
+            {
+                proprietairesMenu.Add(string.Format("id: {0} Nom: {1}", proprietaire.ID, proprietaire.Nom));
+                proprietairesIdValide.Add(proprietaire.ID);
+            }
+            proprietairesMenu.Add("0 pour arrêter");
+            proprietairesIdValide.Add(0);
+            List<int> listeProprietaire = new List<int>();
+            int proprioChoisit;
+            do
+            {
+                AfficheListe(proprietairesMenu);
+                proprioChoisit = ChoisirOption(proprietairesIdValide);
+                if (proprioChoisit != 0)
+                {
+                    listeProprietaire.Add(proprioChoisit);
+                    Console.WriteLine("enlever un autre proprietaire ...");
+                };
+
+            } while (proprioChoisit != 0);
+
+
+            // confirmation
+            proprietaires = (from p in animal.Proprietaires
+                             where listeProprietaire.Contains(p.ID)
+                             orderby p.ID
+                             select (new { p.ID, p.Nom }));
+            proprietairesMenu = new List<string>();
+            Console.WriteLine("Désirez-vous vraiment effacer ces propriétaires");
+            foreach (var proprietaire in proprietaires)
+            {
+                proprietairesMenu.Add(string.Format("id: {0} Nom: {1}", proprietaire.ID, proprietaire.Nom));
+            }
+            AfficheListe(proprietairesMenu);
+
+            char effacer = InputChar("O/N ", new List<char> { 'O', 'N' }, true, 'O');
+            if (effacer == 'O')
+            {
+                foreach (int idProprio in listeProprietaire)
+                {
+                    animal.Proprietaires.Remove(_context.Proprietaires.Find(idProprio));
+                }
+            }
         }
 
         //
