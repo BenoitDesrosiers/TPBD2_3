@@ -170,7 +170,7 @@ namespace TPBD2
             do
             {
                 AfficheListe(optionsMenu);
-                choix = ChoisirOption(new List<int> { 0, 1, 2, 3, 4 });
+                choix = ChoisirOption(new List<int> { 0, 1, 2, 3, 4, 5 });
 
 
                 if (choix != 0)
@@ -189,6 +189,10 @@ namespace TPBD2
                         case 4:
                             AjouterSoins(animal);
                             break;
+                        case 5:
+                            EnleverSoins(animal);
+                            break;
+                            
                     }
 
                     Console.WriteLine("");
@@ -359,28 +363,26 @@ namespace TPBD2
                                  where s.AnimalID == animal.ID
                                  select s.MedicamentID).Contains(m.ID)
                          select m);
-            List<string> medicamentsMenu = new List<string>();
-            List<int> medicamentsIDValide = new List<int>();
-
+            ListDictionary medicamentsMenu = new ListDictionary();
+            
             Console.WriteLine("Choisisez un id de médicament");
             foreach (var soin in soins)
             {
-                medicamentsMenu.Add(string.Format("id: {0} Nom: {1} Prix: {2}", soin.ID, soin.Nom, soin.Nom));
-                medicamentsIDValide.Add(soin.ID);
+                medicamentsMenu.Add(soin.ID, string.Format("id: {0} Nom: {1} Prix: {2}", soin.ID, soin.Nom, soin.PrixUnitaire));
             }
-            medicamentsMenu.Add("0 pour arrêter");
-            medicamentsIDValide.Add(0);
+            medicamentsMenu.Add(0, "0 pour arrêter");
             
             Hashtable listeMedicamentIDetQte = new Hashtable();
             int medicamentChoisit;
             do
             {
-                AfficheListe(medicamentsMenu);
-                medicamentChoisit = ChoisirOption(medicamentsIDValide);
+                AfficheListe(medicamentsMenu.Values.OfType<String>().ToList());
+                medicamentChoisit = ChoisirOption(medicamentsMenu.Keys.OfType<int>().ToList());
                 if (medicamentChoisit != 0)
                 {
+                    medicamentsMenu.Remove(medicamentChoisit);
                     int qte = InputInt("Quel quantité? : ", 1);
-                    listeMedicamentIDetQte.Add(medicamentChoisit, qte); //TODO: enlever les médicaments déjà choisi de la liste. 
+                    listeMedicamentIDetQte.Add(medicamentChoisit, qte); 
                     Console.WriteLine("et une autre médicament ...");
                 };
 
@@ -396,10 +398,53 @@ namespace TPBD2
             }
         }
 
-        private void EnleverSoin(Animal animal)
-        {
 
+        /// <summary>
+        /// Dissociation d'un ou de plusieurs soins d'un animal
+        /// [ répond à la question 1a et 1c2 ]
+        /// </summary>
+        /// <param name="animal">l'animal à modifier</param>
+        private void EnleverSoins(Animal animal)
+        {
+            var soins = (from m in _context.Medicaments
+                         where (from s in _context.Soins
+                                 where s.AnimalID == animal.ID
+                                 select s.MedicamentID).Contains(m.ID)
+                         select m);
+            ListDictionary medicamentsMenu = new ListDictionary();
+
+            Console.WriteLine("Choisisez un id de médicament à enlever");
+            foreach (var soin in soins)
+            {
+                medicamentsMenu.Add(soin.ID, string.Format("id: {0} Nom: {1} Prix: {2}", soin.ID, soin.Nom, soin.PrixUnitaire));
+            }
+            medicamentsMenu.Add(0, "0 pour arrêter");
+
+            List<int> listeMedicamentID = new List<int>();
+            int medicamentChoisit;
+            do
+            {
+                AfficheListe(medicamentsMenu.Values.OfType<String>().ToList());
+                medicamentChoisit = ChoisirOption(medicamentsMenu.Keys.OfType<int>().ToList());
+                if (medicamentChoisit != 0)
+                {
+                    medicamentsMenu.Remove(medicamentChoisit);
+                    listeMedicamentID.Add(medicamentChoisit);
+                    Console.WriteLine("enlever une autre médicament ...");
+                };
+
+            } while (medicamentChoisit != 0);
+
+            foreach (int idMedicament in listeMedicamentID)
+            {
+                Soin soin = (from s in _context.Soins
+                            where s.AnimalID == animal.ID && s.MedicamentID == idMedicament
+                            select s).Single();
+                animal.Soins.Remove(soin);
+            }
         }
+
+       
 
 
         //
