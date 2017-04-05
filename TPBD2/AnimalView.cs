@@ -48,6 +48,9 @@ namespace TPBD2
                         case 2:
                             _ctrl.Effacer();
                             break;
+                        case 3:
+                            _ctrl.Modifier();
+                            break;
                         case 4:
                             _ctrl.ListeProprietaires();
                             break;
@@ -71,7 +74,7 @@ namespace TPBD2
         /// Creation d'un animal
         /// </summary>
         /// <returns>l'Animal à ajouter, ou Null</returns>
-        public Animal Creation()
+        public Animal Creer()
         {
             Animal nouvelAnimal = new Animal();
 
@@ -159,7 +162,7 @@ namespace TPBD2
         /// Demande quel animal effacer
         /// </summary>
         /// <returns>l'Animal à effacer, ou null</returns>
-        public Animal Effacement()
+        public Animal Effacer()
         {
             Console.WriteLine("Quel animal désirez-vous effacer?");
             int animalIdChoisi = ChoisirAnimal(true);
@@ -172,8 +175,7 @@ namespace TPBD2
                     .Include(nameof(Animal.Espece))
                     .Where(a => a.ID == animalIdChoisi).First();
                 AfficheAnimalComplet(animal);
-                View view = new View();
-                char effacer = view.InputChar("O/N ", new List<char> { 'O', 'N' }, true);
+                char effacer = InputChar("O/N ", new List<char> { 'O', 'N' }, true);
                 if (effacer.Equals('N'))
                 {
                     animal = null;
@@ -182,6 +184,99 @@ namespace TPBD2
             return animal;
         }
 
+        public Animal Modifier()
+        {
+            Console.WriteLine("Quel animal désirez-vous modifier?");
+            int animalIdChoisi = ChoisirAnimal(true);
+            Animal animal = null;
+            if (animalIdChoisi == 0)
+            {
+                return null;
+            }
+
+
+            animal = _context.Animals
+                .Include(nameof(Animal.Proprietaires))
+                .Include(nameof(Animal.Espece))
+                .Where(a => a.ID == animalIdChoisi).First();
+            AfficheAnimalComplet(animal);
+
+            List<String> optionsMenu = new List<string>();
+            optionsMenu.Add("Que désirez-vous changer? ");
+
+            optionsMenu.Add("1) Les attributs de l'animal ");
+            optionsMenu.Add("2) Ses propriétaires");
+            optionsMenu.Add("3) Les soins qu'il a recu");
+            optionsMenu.Add("0) sortir");
+
+            int choix;
+            do
+            {
+                AfficheListe(optionsMenu);
+                choix = ChoisirOption(new List<int> { 0, 1, 2, 3 });
+
+
+                if (choix != 0)
+                {
+                    switch (choix)
+                    {
+                        case 1:
+                            ModifierAttributs(animal);
+                            break;
+                        case 2:
+                            //ModifierProprietaires();
+                            break;
+                        case 3:
+                            //ModifierSoins();
+                            break;
+                    }
+
+                    Console.WriteLine("");
+
+                }
+            } while (choix != 0);
+
+
+            return animal;
+        }
+
+        //
+        // Helpers de modification
+        //
+
+        private void ModifierAttributs(Animal animal)
+        {
+
+            // Nom
+            animal.Nom = InputString("Nom de l'animal: ", animal.Nom);
+
+            // Espèce à partir de la liste des espèces [répond à la question 2a ]
+            var especes = (from e in _context.Especes
+                           select (new { e.ID, e.Nom }));
+            List<string> especesMenu = new List<string>();
+            List<int> especesIdValide = new List<int>();
+            foreach (var espece in especes)
+            {
+                especesMenu.Add(string.Format("id: {0} espece: {1}", espece.ID, espece.Nom));
+                especesIdValide.Add(espece.ID);
+            }
+            AfficheListe(especesMenu);
+            animal.Espece = _context.Especes.Find(ChoisirOption(especesIdValide, animal.EspeceID));
+
+            // Couleur
+            animal.Couleur = InputString("Couleur de l'animal: ", animal.Couleur);
+
+            // Sexe
+            animal.Sexe = Convert.ToString(InputChar("Sexe (M/F): ", new List<char> { 'M', 'F' }, true, animal.Sexe != null ? animal.Sexe[0] : 'M'));
+
+            // Poids
+            animal.Poids = InputInt("Poids: ", animal.Poids);
+
+            // Date de naissance
+            animal.DateNaissance = InputDate("Date de naissance (AAAA-MM-JJ): ", animal.DateNaissance);
+
+
+        }
 
         //
         // Rapports

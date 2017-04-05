@@ -21,6 +21,10 @@ namespace TPBD2
             menu.Index();            
         }
 
+        //
+        // CRUD
+        //
+
         /// <summary>
         /// Ajout d'un animal
         /// [répond à la question 2a avec FK non null sur Espèce
@@ -30,7 +34,7 @@ namespace TPBD2
         public void Ajout()
         {
             AnimalView view = new AnimalView(_context, this);
-            Animal nouvelAnimal = view.Creation();
+            Animal nouvelAnimal = view.Creer();
             if ( nouvelAnimal != null)
             {
                 _context.Animals.Add(nouvelAnimal);
@@ -47,7 +51,7 @@ namespace TPBD2
         public void Effacer()
         {
             AnimalView view = new AnimalView(_context, this);
-            Animal animal = view.Effacement();
+            Animal animal = view.Effacer();
 
             if (animal != null)
                 {
@@ -56,6 +60,22 @@ namespace TPBD2
                 }
 
         }
+
+        public void Modifier()
+        {
+            AnimalView view = new AnimalView(_context, this);
+            Animal animalModifie = view.Modifier();
+            if (animalModifie != null)
+            {
+                //_context.Animals.Add(animalModifie);
+                _context.SaveChanges();
+            }
+        }
+
+
+        //
+        // Rapports
+        //
         
         /// <summary>
         /// affiche le contenu de la table Animal et la quantié de soins qu'ils ont recu

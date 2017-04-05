@@ -9,6 +9,7 @@ namespace TPBD2
     class View
     {
         //TODO: changer les public pour protected
+        //TODO: factoriser les fonctions avec une lambda si possible
 
         public void AfficheListe(List<string> lignesMenu)
         {
@@ -18,15 +19,30 @@ namespace TPBD2
             }
         }
 
-        public  int ChoisirOption(List<int> choixValides, string question = "Votre choix: ")
+        /// <summary>
+        /// Permet de choisir un valeur à partir d'une liste de valeur 
+        /// </summary>
+        /// <param name="choixValides">la liste des valeurs pouvant être choisies</param>
+        /// <param name="defaut">la valeur qui sera prise si l'usager appui sur return</param>
+        /// <param name="question">la question qui est posée</param>
+        /// <returns></returns>
+        public int ChoisirOption(List<int> choixValides, int? defaut = null, string question = "Votre choix: ")
         {
             int choix;
 
             do
             {
                 Console.Write(question);
-                string c_choix = Console.ReadLine();
-                if (!Int32.TryParse(c_choix, out choix))
+                if (defaut != null)
+                {
+                    Console.Write(" ( " + defaut + " )");
+                }
+                string reponse = Console.ReadLine();
+                if (reponse == "" && defaut != null)
+                {
+                    reponse = defaut.ToString();
+                }
+                if (!Int32.TryParse(reponse, out choix))
                 { choix = choixValides.Min()-1  ; }
             } while (!choixValides.Contains(choix));
 
@@ -35,62 +51,83 @@ namespace TPBD2
         }
 
 
-        public string InputString(string question)
+        public string InputString(string question, string defaut = null)
         {
             Console.Write(question);
+            if(defaut != null)
+            {
+                Console.Write(" ( " + defaut + " )");
+            }
             string reponse = Console.ReadLine();
+            if(reponse=="" && defaut != null )
+            {
+                reponse = defaut;
+            }
+
             return reponse;
         }
 
-        public char InputChar(string question, List<char> choixValides, bool majuscule = false, char defaut = ' ')
+        public char InputChar(string question, List<char> choixValides, bool majuscule = false, char? defaut = null)
         {
-            string c_choix;
+            string reponse;
             do
             {
-                Console.Write(question+" ("+defaut+")");
-                c_choix = Console.ReadLine();
-                if(c_choix == "")
-                    { c_choix = defaut.ToString(); }
-                if(majuscule) c_choix=c_choix.ToUpper();
-            } while (!choixValides.Contains(c_choix[0]));
+                Console.Write(question);
+                if (defaut != null)
+                {
+                    Console.Write(" ( " + defaut + " )");
+                }
+                reponse = Console.ReadLine();
+                if(reponse == "" && defaut != null)
+                    { reponse = defaut.ToString(); }
+                if(majuscule) reponse=reponse.ToUpper();
+            } while (!choixValides.Contains(reponse[0]));
 
-            return c_choix[0];
+            return reponse[0];
         }
 
-        public int InputInt(string question)
+        public int InputInt(string question, int? defaut = null)
         {
             string reponse;
             int reponseInt;
             do
             {
                 Console.Write(question);
+                if (defaut != null)
+                {
+                    Console.Write(" ( " + defaut + " )");
+                }
                 reponse = Console.ReadLine();
+                if (reponse == "" && defaut != null)
+                {
+                    reponse = defaut.ToString();
+                }
             } while (!Int32.TryParse(reponse, out reponseInt));
             return reponseInt;
 
         }
 
-        public DateTime InputDate(string question, DateTime dateNaissanceDefault = default(DateTime))
+        public DateTime InputDate(string question, DateTime? defaut = null)
         {
             string reponse;
             DateTime reponseDate = DateTime.Now;
             bool bonneDate;
-            if (dateNaissanceDefault.Equals(default(DateTime)))
+            if (defaut == null)
             {
-                dateNaissanceDefault = DateTime.Now;
+                defaut = DateTime.Now;
             }
 
             do
             {
                 
-                Console.Write(question+" ("+dateNaissanceDefault.Date+")");
+                Console.Write(question+" ( "+defaut.Value.Date+" )");
                 reponse = Console.ReadLine();
                 bonneDate = true;
                 try
                 {
                     if (reponse == "")
                     {
-                        reponseDate = dateNaissanceDefault;
+                        reponseDate = defaut.Value;
                     }
                     else
                     {

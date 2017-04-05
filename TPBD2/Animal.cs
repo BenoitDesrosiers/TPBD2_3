@@ -23,7 +23,7 @@ namespace TPBD2
     
         public int ID { get; set; }
         public string Nom { get; set; }
-        public Nullable<int> EspeceID { get; set; }
+        public int EspeceID { get; set; }
         public string Couleur { get; set; }
         public string Sexe { get; set; }
         public Nullable<int> Poids { get; set; }

@@ -21,7 +21,7 @@ create table Animal
 ID INT not null IDENTITY(1,1)
 	constraint PK_Animal_ID PRIMARY KEY,
 Nom VARCHAR(40),
-EspeceID INT
+EspeceID INT NOT NULL
     constraint FK_Animaux_EspeceID FOREIGN KEY (EspeceID)
 		references Espece(ID)
 		ON UPDATE CASCADE,

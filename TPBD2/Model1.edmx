@@ -4,14 +4,14 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="TPBD2e7654321Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="TPBD2e7654321Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Animal">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Nom" Type="varchar" MaxLength="40" />
-          <Property Name="EspeceID" Type="int" />
+          <Property Name="EspeceID" Type="int" Nullable="false" />
           <Property Name="Couleur" Type="varchar" MaxLength="20" />
           <Property Name="Sexe" Type="varchar" MaxLength="1" />
           <Property Name="Poids" Type="int" />
@@ -59,7 +59,9 @@
           <Property Name="Quantite" Type="int" />
         </EntityType>
         <Association Name="FK_AnimalProprietaire_AnimalID">
-          <End Role="Animal" Type="Self.Animal" Multiplicity="1" />
+          <End Role="Animal" Type="Self.Animal" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="AnimalProprietaire" Type="Self.AnimalProprietaire" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Animal">
@@ -71,7 +73,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_AnimalProprietaire_ProprietaireID">
-          <End Role="Proprietaire" Type="Self.Proprietaire" Multiplicity="1" />
+          <End Role="Proprietaire" Type="Self.Proprietaire" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="AnimalProprietaire" Type="Self.AnimalProprietaire" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Proprietaire">
@@ -83,7 +87,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Animaux_EspeceID">
-          <End Role="Espece" Type="Self.Espece" Multiplicity="0..1" />
+          <End Role="Espece" Type="Self.Espece" Multiplicity="1" />
           <End Role="Animal" Type="Self.Animal" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Espece">
@@ -95,7 +99,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Soin_AnimalID">
-          <End Role="Animal" Type="Self.Animal" Multiplicity="1" />
+          <End Role="Animal" Type="Self.Animal" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Soin" Type="Self.Soin" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Animal">
@@ -107,7 +113,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Soin_MedicamentID">
-          <End Role="Medicament" Type="Self.Medicament" Multiplicity="1" />
+          <End Role="Medicament" Type="Self.Medicament" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Soin" Type="Self.Soin" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Medicament">
@@ -146,8 +154,7 @@
             <End Role="Soin" EntitySet="Soin" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="TPBD2e7654321Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -157,7 +164,7 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Nom" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
-          <Property Name="EspeceID" Type="Int32" />
+          <Property Name="EspeceID" Type="Int32" Nullable="false" />
           <Property Name="Couleur" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Sexe" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="Poids" Type="Int32" />
@@ -205,7 +212,7 @@
           <NavigationProperty Name="Medicament" Relationship="Self.FK_Soin_MedicamentID" FromRole="Soin" ToRole="Medicament" />
         </EntityType>
         <Association Name="FK_Animaux_EspeceID">
-          <End Role="Espece" Type="Self.Espece" Multiplicity="0..1" />
+          <End Role="Espece" Type="Self.Espece" Multiplicity="1" />
           <End Role="Animal" Type="Self.Animal" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Espece">
