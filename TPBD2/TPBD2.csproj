@@ -86,7 +86,8 @@
     <Compile Include="Soin.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="View.cs" />
+    <Compile Include="Vues\IVue.cs" />
+    <Compile Include="Vues\VuesConsole.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TPBD2
+namespace TPBD2.Vues
 {
-    class Vue
+    class VueConsole
     {
+
+
         //TODO: changer les public pour protected
         //TODO: factoriser les fonctions avec une lambda si possible
 
