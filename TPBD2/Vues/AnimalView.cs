@@ -6,14 +6,17 @@ using System.Threading.Tasks;
 
 using System.Collections.Specialized; // pour ListDictionnary
 using System.Collections; // pour DictionnaryEntry
-namespace TPBD2
+
+using TPBD2.Controlleurs;
+
+namespace TPBD2.Vues
 {
-    class AnimalView : View
+    class AnimalVue : Vue
     {
         private TPBD2e7654321Entities _context;
         private AnimalCtrl _ctrl;
 
-        public AnimalView(TPBD2e7654321Entities context, AnimalCtrl ctrl)
+        public AnimalVue(TPBD2e7654321Entities context, AnimalCtrl ctrl)
         {
             _context = context;
             _ctrl = ctrl;
@@ -95,7 +98,7 @@ namespace TPBD2
                 nouvelAnimal.DateNaissance
                 );
 
-            char ajouter = InputChar("O/N", new List<char> { 'O', 'N' }, true);
+            char ajouter = InputChar("O/N", new List<char> { 'O', 'N' }, true, 'O');
             if (ajouter == 'N')
             {
                 nouvelAnimal = null;

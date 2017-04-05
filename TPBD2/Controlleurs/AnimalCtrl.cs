@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using TPBD2.Vues;
 
-namespace TPBD2
+namespace TPBD2.Controlleurs
 {
     class AnimalCtrl
     {
@@ -17,7 +18,7 @@ namespace TPBD2
         }
         public void Index()
         {
-            AnimalView menu = new AnimalView(_context, this);
+            AnimalVue menu = new AnimalVue(_context, this);
             menu.Index();            
         }
 
@@ -33,7 +34,7 @@ namespace TPBD2
         /// <param name="context"></param>
         public void Ajout()
         {
-            AnimalView view = new AnimalView(_context, this);
+            AnimalVue view = new AnimalVue(_context, this);
             Animal nouvelAnimal = view.Creer();
             if ( nouvelAnimal != null)
             {
@@ -50,7 +51,7 @@ namespace TPBD2
         /// <param name="context"></param>
         public void Effacer()
         {
-            AnimalView view = new AnimalView(_context, this);
+            AnimalVue view = new AnimalVue(_context, this);
             Animal animal = view.Effacer();
 
             if (animal != null)
@@ -63,7 +64,7 @@ namespace TPBD2
 
         public void Modifier()
         {
-            AnimalView view = new AnimalView(_context, this);
+            AnimalVue view = new AnimalVue(_context, this);
             Animal animalModifie = view.Modifier();
             if (animalModifie != null)
             {
@@ -83,7 +84,7 @@ namespace TPBD2
         /// </summary>
         public void RapportNombreSoin()
         {
-            AnimalView view = new AnimalView(_context, this);
+            AnimalVue view = new AnimalVue(_context, this);
             view.RapportNombreSoin();      
         }
 
@@ -94,7 +95,7 @@ namespace TPBD2
         /// </summary>
         public void ListeProprietaires()
         {
-            AnimalView view = new AnimalView(_context, this);
+            AnimalVue view = new AnimalVue(_context, this);
             view.Liste();
         }
        

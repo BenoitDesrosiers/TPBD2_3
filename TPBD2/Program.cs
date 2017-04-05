@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using TPBD2.Controlleurs;
 
 namespace TPBD2
 {
@@ -22,7 +23,7 @@ namespace TPBD2
             optionsMenu.Add("5) Agrégation ");
             optionsMenu.Add("0) sortir");
 
-            View menu = new View();
+            Vue menu = new Vue();
             int choix;
 
             do
