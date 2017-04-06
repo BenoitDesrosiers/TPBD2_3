@@ -17,7 +17,7 @@ namespace TPBD2.Vues
         /// Création d'un item
         /// </summary>
         /// <returns>l'item créé</returns>
-         Creer();
+        Object Creer();
 
         /// <summary>
         /// Destruction d'un item

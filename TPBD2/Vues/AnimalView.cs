@@ -11,7 +11,7 @@ using TPBD2.Controlleurs;
 
 namespace TPBD2.Vues
 {
-    class AnimalVue : VueConsole, IVue
+    class AnimalVue : VueConsole
     {
         private TPBD2e7654321Entities _context;
         private AnimalCtrl _ctrl;
