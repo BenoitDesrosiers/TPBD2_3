@@ -28,6 +28,10 @@ namespace TPBD2.Controlleurs
         /// Modification d'une entité
         /// </summary>
         void Modifier();
-        
+
+        /// <summary>
+        /// Affiche une entité
+        /// </summary>
+        void Afficher();
     }
 }

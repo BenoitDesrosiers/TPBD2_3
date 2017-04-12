@@ -11,10 +11,15 @@ using TPBD2.Controlleurs;
 
 namespace TPBD2.Vues
 {
-    class AnimalVue: VueConsole
+    class AnimalCRUDVue: VueConsole
     {
-        public AnimalVue(TPBD2e7654321Entities context, AnimalCtrl ctrl, IIO IO): base(context, ctrl, IO)
-        {}
+        private AnimalSelectionVue selecteur;
+
+        public AnimalCRUDVue(TPBD2e7654321Entities context, AnimalCRUDCtrl ctrl, IIO IO): base(context, ctrl, IO)
+        {
+            selecteur = new AnimalSelectionVue(context, IO);
+
+        }
 
         /// <summary>
         /// Menu principal pour les Animaux
@@ -51,7 +56,7 @@ namespace TPBD2.Vues
                             _ctrl.Modifier();
                             break;
                         case 4:
-                            AnimalCtrl a_ctrl = (AnimalCtrl)_ctrl;
+                            AnimalCRUDCtrl a_ctrl = (AnimalCRUDCtrl)_ctrl;
                             a_ctrl.ListeProprietaires();
                             break;
                         case 5:
@@ -109,7 +114,7 @@ namespace TPBD2.Vues
         public Animal Effacer()
         {
             Console.WriteLine("Quel animal désirez-vous effacer?");
-            int animalIdChoisi = ChoisirAnimal(true);
+            int animalIdChoisi = selecteur.ChoisirAnimal(true);
             Animal animal = null;
             if (animalIdChoisi != 0)
             {
@@ -139,7 +144,7 @@ namespace TPBD2.Vues
             //      si je retourne voir les changements avant de sortir, ils ne sont pas faits
             //      exemple: enlever un propriétaire, retourner à enlever, celui enlever la première fois est encore dans la liste. 
             Console.WriteLine("Quel animal désirez-vous modifier?");
-            int animalIdChoisi = ChoisirAnimal(true);
+            int animalIdChoisi = selecteur.ChoisirAnimal(true);
             Animal animal = null;
             if (animalIdChoisi == 0)
             {
@@ -201,6 +206,30 @@ namespace TPBD2.Vues
 
             return animal;
         }
+
+        /// <summary>
+        /// Liste un animal et ses propriétaires
+        /// [répond à la question 1b puisque la table Animal à une relation
+        /// plusieurs à plusieurs avec Propriétaire.] 
+        /// </summary>
+        public void Afficher()
+        {
+            Console.WriteLine("Quel animal désirez-vous afficher");
+            int animalIdChoisi = selecteur.ChoisirAnimal(true);
+
+            if (animalIdChoisi != 0)
+            {
+                var animaux = _context.Animals
+                    .Include(nameof(Animal.Proprietaires))
+                    .Include(nameof(Animal.Espece))
+                    .Where(a => a.ID.Equals(animalIdChoisi));
+                foreach (Animal animal in animaux)
+                {
+                    AfficheAnimalComplet(animal);
+                }
+            }
+        }
+
 
         //
         // Helpers d'ajout et de modification
@@ -442,121 +471,13 @@ namespace TPBD2.Vues
             }
         }
 
-       
-
-
-        //
-        // Rapports
-        //
-
-        /// <summary>
-        /// Affiche le contenu de la table Animal et la quantié de soins qu'ils ont recu
-        /// [répond à la question 4 a et b]
-        /// </summary>
-        public void RapportNombreSoin()
-        {
-            Console.WriteLine("Rapport sur quel animal:");
-            int animalIdChoisi = ChoisirAnimal( true);
-
-            if (animalIdChoisi != 0)
-            {
-                Console.WriteLine("Version avec syntaxe par requêtes");
-
-                var animauxEtcompte = from a in _context.Animals
-                                      let ac = new
-                                      {
-                                          a,
-                                          compte = a.Soins.Count
-                                      }
-                                      where a.ID.Equals(animalIdChoisi)
-                                      select (ac);
-
-                foreach (var animal in animauxEtcompte)
-                {
-                    Console.WriteLine("id: {0} nom: {1}  # de soins: {2}", animal.a.ID, animal.a.Nom, animal.compte);
-                }
-
-                Console.WriteLine("----------------------");
-
-                Console.WriteLine("Version avec syntaxe par méthodes");
-                var animauxEtcompte2 = _context.Animals
-                                    .Where(c => c.ID == animalIdChoisi)
-                                    .Select(a => new { a, compte = a.Soins.Count });
-
-                foreach (var animal in animauxEtcompte2)
-                {
-                    Console.WriteLine("id: {0} nom: {1}  # de soins: {2}", animal.a.ID, animal.a.Nom, animal.compte);
-                }
-
-                Console.WriteLine("----------------------");
-
-                Console.WriteLine("");
-                Console.WriteLine("une touche pour continuer");
-                Console.ReadKey();
-            }
-        }
-
-        /// <summary>
-        /// Liste un animal et ses propriétaires
-        /// [répond à la question 1b puisque la table Animal à une relation
-        /// plusieurs à plusieurs avec Propriétaire.] 
-        /// </summary>
-        public void Liste()
-        {
-            Console.WriteLine("Pour quel animal désirez-vous un rapport ");
-            int animalIdChoisi = ChoisirAnimal(true);
-
-            if (animalIdChoisi != 0)
-            {
-                var animaux = _context.Animals
-                    .Include(nameof(Animal.Proprietaires))
-                    .Include(nameof(Animal.Espece))
-                    .Where(a => a.ID.Equals(animalIdChoisi));
-                foreach (Animal animal in animaux)
-                {
-                    AfficheAnimalComplet(animal);
-                }
-            }
-        }
-
-
-        //
-        // Helpers
-        //
-        /// <summary>
-        /// Permet de sélectionner un animal dans la liste complète
-        /// </summary>
-        /// <param name="optionAnnuler">Si vrai, ajoute l'option 0 pour annuler</param>
-        /// <returns>l'id de l'animal choisi ou 0</returns>
-        private int ChoisirAnimal( bool optionAnnuler = false)
-        {
-
-            IQueryable<Animal> animals = from a in _context.Animals
-                                         select a;
-            List<string> animauxMenu = new List<string>();
-            List<int> animauxIdValide = new List<int>();
-
-            foreach (Animal animal in animals)
-            {
-                animauxMenu.Add(string.Format("id: {0} nom: {1}", animal.ID, animal.Nom));
-                animauxIdValide.Add(animal.ID);
-            }
-            if (optionAnnuler)
-            {
-                animauxMenu.Add("0 pour annuler");
-                animauxIdValide.Add(0);
-            }
-            _io.AfficheListe(animauxMenu);
-
-            return _io.ChoisirOption(animauxIdValide);
-
-
-        }
 
         /// <summary>
         /// Affiche la fiche complète d'un animal. 
         /// A noter qu'il est mieux de eager load les propriétaires et l'espece, 
         /// sinon ils seront lazy load. 
+        /// [répond à la question 1b puisque la table Animal à une relation
+        /// plusieurs à plusieurs avec Propriétaire.] 
         /// </summary>
         /// <param name="animal"> l'animal à afficher</param>
 

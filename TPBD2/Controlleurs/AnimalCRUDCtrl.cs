@@ -8,19 +8,16 @@ using TPBD2.Vues;
 
 namespace TPBD2.Controlleurs
 {
-    class AnimalCtrl : ICRUDControlleur
+    class AnimalCRUDCtrl : AbstractCRUDCtrl
     {
-        private TPBD2e7654321Entities _context;
-        private IIO _io;
+        
+        public AnimalCRUDCtrl(TPBD2e7654321Entities context, IIO io):base(context, io)
+        { }
+       
 
-        public AnimalCtrl(TPBD2e7654321Entities context, IIO IO)
+        override public void  Index()
         {
-            _context = context;
-            _io = IO;
-        }
-        public void Index()
-        {
-            AnimalVue menu = new AnimalVue(_context, this, _io);
+            AnimalCRUDVue menu = new AnimalCRUDVue(_context, this, _io);
             menu.Index();            
         }
 
@@ -34,9 +31,9 @@ namespace TPBD2.Controlleurs
         ///  et à la question 1a pour la relation un à plusieurs sur Proprietaire ].  
         /// </summary>
         /// <param name="context"></param>
-        public void Ajout()
+        override public void Ajout()
         {
-            AnimalVue view = new AnimalVue(_context, this, _io);
+            AnimalCRUDVue view = new AnimalCRUDVue(_context, this, _io);
             Animal nouvelAnimal = view.Creer();
             if ( nouvelAnimal != null)
             {
@@ -51,9 +48,9 @@ namespace TPBD2.Controlleurs
         /// [répond à la question 1d pour les proprietaire
         /// </summary>
         /// <param name="context"></param>
-        public void Effacer()
+        override public void Effacer()
         {
-            AnimalVue view = new AnimalVue(_context, this, _io);
+            AnimalCRUDVue view = new AnimalCRUDVue(_context, this, _io);
             Animal animal = view.Effacer();
 
             if (animal != null)
@@ -64,9 +61,9 @@ namespace TPBD2.Controlleurs
 
         }
 
-        public void Modifier()
+        override public void Modifier()
         {
-            AnimalVue view = new AnimalVue(_context, this, _io);
+            AnimalCRUDVue view = new AnimalCRUDVue(_context, this, _io);
             Animal animalModifie = view.Modifier();
             if (animalModifie != null)
             {
@@ -75,31 +72,12 @@ namespace TPBD2.Controlleurs
             }
         }
 
-
-        //
-        // Rapports
-        //
-        
-        /// <summary>
-        /// affiche le contenu de la table Animal et la quantié de soins qu'ils ont recu
-        /// [répond à la question 4 a et b]
-        /// </summary>
-        public void RapportNombreSoin()
+        public override void Afficher()
         {
-            AnimalVue view = new AnimalVue(_context, this, _io);
-            view.RapportNombreSoin();      
+            throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Liste un animal et ses propriétaires
-        /// [répond à la question 1b puisque la table Animal à une relation
-        /// plusieurs à plusieurs avec Propriétaire.] 
-        /// </summary>
-        public void ListeProprietaires()
-        {
-            AnimalVue view = new AnimalVue(_context, this, _io);
-            view.Liste();
-        }
+       
        
     }
 }

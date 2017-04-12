@@ -57,9 +57,12 @@
     <Compile Include="Animal.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Controlleurs\AnimalCtrl.cs" />
+    <Compile Include="Controlleurs\AbstractCRUDCtrl.cs" />
+    <Compile Include="Controlleurs\AbstractCtrl.cs" />
+    <Compile Include="Controlleurs\AnimalCRUDCtrl.cs" />
+    <Compile Include="Controlleurs\AnimalRapportCtrl.cs" />
     <Compile Include="Controlleurs\ICRUDControlleur.cs" />
-    <Compile Include="Vues\AnimalVue.cs" />
+    <Compile Include="Vues\AnimalCRUDVue.cs" />
     <Compile Include="Espece.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -87,10 +90,12 @@
     <Compile Include="Soin.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Vues\AnimalRapportVue.cs" />
+    <Compile Include="Vues\AnimalSelectionVue.cs" />
     <Compile Include="Vues\IIO.cs" />
     <Compile Include="Vues\IOconsole.cs" />
     <Compile Include="Vues\IVue.cs" />
-    <Compile Include="Vues\VuesConsole.cs" />
+    <Compile Include="Vues\VueCRUDConsole.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
