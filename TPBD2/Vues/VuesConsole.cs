@@ -12,10 +12,10 @@ namespace TPBD2.Vues
     abstract class VueConsole
     {
         protected TPBD2e7654321Entities _context;
-        protected AnimalCtrl _ctrl;
+        protected ICRUDControlleur _ctrl;
         protected IIO _io;
 
-        public VueConsole(TPBD2e7654321Entities context, AnimalCtrl ctrl, IIO IO)
+        public VueConsole(TPBD2e7654321Entities context, ICRUDControlleur ctrl, IIO IO)
         {
             _context = context;
             _ctrl = ctrl;

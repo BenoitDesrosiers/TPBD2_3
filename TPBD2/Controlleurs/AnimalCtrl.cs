@@ -8,7 +8,7 @@ using TPBD2.Vues;
 
 namespace TPBD2.Controlleurs
 {
-    class AnimalCtrl
+    class AnimalCtrl : ICRUDControlleur
     {
         private TPBD2e7654321Entities _context;
         private IIO _io;

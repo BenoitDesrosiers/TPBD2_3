@@ -51,7 +51,8 @@ namespace TPBD2.Vues
                             _ctrl.Modifier();
                             break;
                         case 4:
-                            _ctrl.ListeProprietaires();
+                            AnimalCtrl a_ctrl = (AnimalCtrl)_ctrl;
+                            a_ctrl.ListeProprietaires();
                             break;
                         case 5:
                             _ctrl.RapportNombreSoin();
