@@ -11,16 +11,10 @@ using TPBD2.Controlleurs;
 
 namespace TPBD2.Vues
 {
-    class AnimalVue : VueConsole, IVue
+    class AnimalVue: VueConsole
     {
-        private TPBD2e7654321Entities _context;
-        private AnimalCtrl _ctrl;
-
-        public AnimalVue(TPBD2e7654321Entities context, AnimalCtrl ctrl)
-        {
-            _context = context;
-            _ctrl = ctrl;
-        }
+        public AnimalVue(TPBD2e7654321Entities context, AnimalCtrl ctrl, IIO IO): base(context, ctrl, IO)
+        {}
 
         /// <summary>
         /// Menu principal pour les Animaux
@@ -39,8 +33,8 @@ namespace TPBD2.Vues
             int choix;
             do
             {
-                AfficheListe(optionsMenu);
-                choix = ChoisirOption(new List<int> { 0, 1, 2, 3, 4, 5 });
+                _io.AfficheListe(optionsMenu);
+                choix = _io.ChoisirOption(new List<int> { 0, 1, 2, 3, 4, 5 });
 
 
                 if (choix != 0)
@@ -98,7 +92,7 @@ namespace TPBD2.Vues
                 nouvelAnimal.DateNaissance
                 );
 
-            char ajouter = InputChar("O/N", new List<char> { 'O', 'N' }, true, 'O');
+            char ajouter = _io.InputChar("O/N", new List<char> { 'O', 'N' }, true, 'O');
             if (ajouter == 'N')
             {
                 nouvelAnimal = null;
@@ -124,7 +118,7 @@ namespace TPBD2.Vues
                     .Include(nameof(Animal.Espece))
                     .Where(a => a.ID == animalIdChoisi).First();
                 AfficheAnimalComplet(animal);
-                char effacer = InputChar("O/N ", new List<char> { 'O', 'N' }, true);
+                char effacer = _io.InputChar("O/N ", new List<char> { 'O', 'N' }, true);
                 if (effacer.Equals('N'))
                 {
                     animal = null; //FIXME: animal est suivit par le context. Que cé ca fait de le mettre à null?
@@ -172,8 +166,8 @@ namespace TPBD2.Vues
             int choix;
             do
             {
-                AfficheListe(optionsMenu);
-                choix = ChoisirOption(new List<int> { 0, 1, 2, 3, 4, 5 });
+                _io.AfficheListe(optionsMenu);
+                choix = _io.ChoisirOption(new List<int> { 0, 1, 2, 3, 4, 5 });
 
 
                 if (choix != 0)
@@ -223,7 +217,7 @@ namespace TPBD2.Vues
         {
 
             // Nom
-            animal.Nom = InputString("Nom de l'animal: ", animal.Nom);
+            animal.Nom = _io.InputString("Nom de l'animal: ", animal.Nom);
 
             // Espèce à partir de la liste des espèces [répond à la question 2a ]
             var especes = (from e in _context.Especes
@@ -235,20 +229,20 @@ namespace TPBD2.Vues
                 especesMenu.Add(string.Format("id: {0} espece: {1}", espece.ID, espece.Nom));
                 especesIdValide.Add(espece.ID);
             }
-            AfficheListe(especesMenu);
-            animal.Espece = _context.Especes.Find(ChoisirOption(especesIdValide, animal.EspeceID != 0 ? animal.EspeceID : (int?)null));
+            _io.AfficheListe(especesMenu);
+            animal.Espece = _context.Especes.Find(_io.ChoisirOption(especesIdValide, animal.EspeceID != 0 ? animal.EspeceID : (int?)null));
 
             // Couleur
-            animal.Couleur = InputString("Couleur de l'animal: ", animal.Couleur);
+            animal.Couleur = _io.InputString("Couleur de l'animal: ", animal.Couleur);
 
             // Sexe
-            animal.Sexe = Convert.ToString(InputChar("Sexe (M/F): ", new List<char> { 'M', 'F' }, true, animal.Sexe != null ? animal.Sexe[0] : 'M'));
+            animal.Sexe = Convert.ToString(_io.InputChar("Sexe (M/F): ", new List<char> { 'M', 'F' }, true, animal.Sexe != null ? animal.Sexe[0] : 'M'));
 
             // Poids
-            animal.Poids = InputInt("Poids: ", animal.Poids);
+            animal.Poids = _io.InputInt("Poids: ", animal.Poids);
 
             // Date de naissance
-            animal.DateNaissance = InputDate("Date de naissance (AAAA-MM-JJ): ", animal.DateNaissance);
+            animal.DateNaissance = _io.InputDate("Date de naissance (AAAA-MM-JJ): ", animal.DateNaissance);
 
 
         }
@@ -279,8 +273,8 @@ namespace TPBD2.Vues
             int proprioChoisit;
             do
             {
-                AfficheListe(proprietairesMenu);
-                proprioChoisit = ChoisirOption(proprietairesIdValide);
+                _io.AfficheListe(proprietairesMenu);
+                proprioChoisit = _io.ChoisirOption(proprietairesIdValide);
                 if (proprioChoisit != 0)
                 {
                     listeProprietaire.Add(proprioChoisit);
@@ -320,8 +314,8 @@ namespace TPBD2.Vues
             int proprioChoisit;
             do
             {
-                AfficheListe(proprietairesMenu);
-                proprioChoisit = ChoisirOption(proprietairesIdValide);
+                _io.AfficheListe(proprietairesMenu);
+                proprioChoisit = _io.ChoisirOption(proprietairesIdValide);
                 if (proprioChoisit != 0)
                 {
                     listeProprietaire.Add(proprioChoisit);
@@ -342,9 +336,9 @@ namespace TPBD2.Vues
             {
                 proprietairesMenu.Add(string.Format("id: {0} Nom: {1}", proprietaire.ID, proprietaire.Nom));
             }
-            AfficheListe(proprietairesMenu);
+            _io.AfficheListe(proprietairesMenu);
 
-            char effacer = InputChar("O/N ", new List<char> { 'O', 'N' }, true, 'O');
+            char effacer = _io.InputChar("O/N ", new List<char> { 'O', 'N' }, true, 'O');
             if (effacer == 'O')
             {
                 foreach (int idProprio in listeProprietaire)
@@ -379,12 +373,12 @@ namespace TPBD2.Vues
             int medicamentChoisit;
             do
             {
-                AfficheListe(medicamentsMenu.Values.OfType<String>().ToList());
-                medicamentChoisit = ChoisirOption(medicamentsMenu.Keys.OfType<int>().ToList());
+                _io.AfficheListe(medicamentsMenu.Values.OfType<String>().ToList());
+                medicamentChoisit = _io.ChoisirOption(medicamentsMenu.Keys.OfType<int>().ToList());
                 if (medicamentChoisit != 0)
                 {
                     medicamentsMenu.Remove(medicamentChoisit);
-                    int qte = InputInt("Quel quantité? : ", 1);
+                    int qte = _io.InputInt("Quel quantité? : ", 1);
                     listeMedicamentIDetQte.Add(medicamentChoisit, qte); 
                     Console.WriteLine("et une autre médicament ...");
                 };
@@ -427,8 +421,8 @@ namespace TPBD2.Vues
             int medicamentChoisit;
             do
             {
-                AfficheListe(medicamentsMenu.Values.OfType<String>().ToList());
-                medicamentChoisit = ChoisirOption(medicamentsMenu.Keys.OfType<int>().ToList());
+                _io.AfficheListe(medicamentsMenu.Values.OfType<String>().ToList());
+                medicamentChoisit = _io.ChoisirOption(medicamentsMenu.Keys.OfType<int>().ToList());
                 if (medicamentChoisit != 0)
                 {
                     medicamentsMenu.Remove(medicamentChoisit);
@@ -551,9 +545,9 @@ namespace TPBD2.Vues
                 animauxMenu.Add("0 pour annuler");
                 animauxIdValide.Add(0);
             }
-            AfficheListe(animauxMenu);
+            _io.AfficheListe(animauxMenu);
 
-            return ChoisirOption(animauxIdValide);
+            return _io.ChoisirOption(animauxIdValide);
 
 
         }

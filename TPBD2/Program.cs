@@ -24,7 +24,7 @@ namespace TPBD2
             optionsMenu.Add("5) Agrégation ");
             optionsMenu.Add("0) sortir");
 
-            VueConsole menu = new VueConsole();
+            IOconsole menu = new IOconsole();
             int choix;
 
             do
@@ -40,7 +40,8 @@ namespace TPBD2
                         switch (choix)
                         {
                             case 1:
-                                AnimalCtrl animalCtrl = new AnimalCtrl(context);
+                                IOconsole io = new IOconsole();
+                                AnimalCtrl animalCtrl = new AnimalCtrl(context,io);
                                 animalCtrl.Index();
                                 break;
                             case '2':

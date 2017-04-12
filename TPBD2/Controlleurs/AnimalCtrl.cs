@@ -11,14 +11,16 @@ namespace TPBD2.Controlleurs
     class AnimalCtrl
     {
         private TPBD2e7654321Entities _context;
+        private IIO _io;
 
-        public AnimalCtrl(TPBD2e7654321Entities context)
+        public AnimalCtrl(TPBD2e7654321Entities context, IIO IO)
         {
             _context = context;
+            _io = IO;
         }
         public void Index()
         {
-            AnimalVue menu = new AnimalVue(_context, this);
+            AnimalVue menu = new AnimalVue(_context, this, _io);
             menu.Index();            
         }
 
@@ -34,7 +36,7 @@ namespace TPBD2.Controlleurs
         /// <param name="context"></param>
         public void Ajout()
         {
-            AnimalVue view = new AnimalVue(_context, this);
+            AnimalVue view = new AnimalVue(_context, this, _io);
             Animal nouvelAnimal = view.Creer();
             if ( nouvelAnimal != null)
             {
@@ -51,7 +53,7 @@ namespace TPBD2.Controlleurs
         /// <param name="context"></param>
         public void Effacer()
         {
-            AnimalVue view = new AnimalVue(_context, this);
+            AnimalVue view = new AnimalVue(_context, this, _io);
             Animal animal = view.Effacer();
 
             if (animal != null)
@@ -64,7 +66,7 @@ namespace TPBD2.Controlleurs
 
         public void Modifier()
         {
-            AnimalVue view = new AnimalVue(_context, this);
+            AnimalVue view = new AnimalVue(_context, this, _io);
             Animal animalModifie = view.Modifier();
             if (animalModifie != null)
             {
@@ -84,7 +86,7 @@ namespace TPBD2.Controlleurs
         /// </summary>
         public void RapportNombreSoin()
         {
-            AnimalVue view = new AnimalVue(_context, this);
+            AnimalVue view = new AnimalVue(_context, this, _io);
             view.RapportNombreSoin();      
         }
 
@@ -95,7 +97,7 @@ namespace TPBD2.Controlleurs
         /// </summary>
         public void ListeProprietaires()
         {
-            AnimalVue view = new AnimalVue(_context, this);
+            AnimalVue view = new AnimalVue(_context, this, _io);
             view.Liste();
         }
        
