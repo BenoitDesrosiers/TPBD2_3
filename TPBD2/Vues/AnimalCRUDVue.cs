@@ -57,10 +57,10 @@ namespace TPBD2.Vues
                             break;
                         case 4:
                             AnimalCRUDCtrl a_ctrl = (AnimalCRUDCtrl)_ctrl;
-                            a_ctrl.ListeProprietaires();
+                            //a_ctrl.ListeProprietaires();  <<<<<< enlevé temporairement
                             break;
                         case 5:
-                            _ctrl.RapportNombreSoin();
+                            //_ctrl.RapportNombreSoin();
                             break;
 
                     }

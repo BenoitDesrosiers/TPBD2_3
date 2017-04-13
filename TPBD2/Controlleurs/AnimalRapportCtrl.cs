@@ -22,15 +22,5 @@ namespace TPBD2.Controlleurs
             view.RapportNombreSoin();
         }
 
-        /// <summary>
-        /// Liste un animal et ses propriétaires
-        
-        /// </summary>
-        public void ListeProprietaires()
-        {
-            AnimalRapportVue view = new AnimalRapportVue(_context, this, _io);
-            view.Afficher();
-        }
-
     }
 }
