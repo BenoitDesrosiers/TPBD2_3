@@ -41,7 +41,7 @@ namespace TPBD2
                         {
                             case 1:
                                 IOconsole io = new IOconsole();
-                                AbstractCRUDCtrl animalCtrl = new AnimalCRUDCtrl(context,io);
+                                AnimalIndexCtrl animalCtrl = new AnimalIndexCtrl(context,io);
                                 animalCtrl.Index();
                                 break;
                             case '2':

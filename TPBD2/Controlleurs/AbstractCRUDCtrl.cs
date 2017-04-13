@@ -13,8 +13,6 @@ namespace TPBD2.Controlleurs
         public AbstractCRUDCtrl(TPBD2e7654321Entities context, IIO IO):base(context, IO)
         { }
 
-        abstract public void Index();
-
         abstract public void Ajout();
 
         abstract public void Effacer();

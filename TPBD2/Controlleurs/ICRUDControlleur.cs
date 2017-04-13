@@ -8,11 +8,6 @@ namespace TPBD2.Controlleurs
 {
     interface ICRUDControlleur
     {
-        /// <summary>
-        /// Menu principale
-        /// </summary>
-        void Index();
-
 
         /// <summary>
         /// Ajout d'une entité

@@ -11,65 +11,17 @@ using TPBD2.Controlleurs;
 
 namespace TPBD2.Vues
 {
-    class AnimalCRUDVue: VueConsole
+    class AnimalCRUDVue: AbstractVueConsole
     {
         private AnimalSelectionVue selecteur;
 
-        public AnimalCRUDVue(TPBD2e7654321Entities context, AnimalCRUDCtrl ctrl, IIO IO): base(context, ctrl, IO)
+        public AnimalCRUDVue(TPBD2e7654321Entities context, IIO IO): base(context, IO)
         {
             selecteur = new AnimalSelectionVue(context, IO);
 
         }
 
-        /// <summary>
-        /// Menu principal pour les Animaux
-        /// </summary>
-        public void Index()
-        {
-            List<String> optionsMenu = new List<string>();
-
-            optionsMenu.Add("1) Ajout d'un animal");
-            optionsMenu.Add("2) Effacer un animal");
-            optionsMenu.Add("3) Modifier un animal");
-            optionsMenu.Add("4) Liste des animaux");
-            optionsMenu.Add("5) Rapport sur le nombre de médicament par animal ");
-            optionsMenu.Add("0) sortir");
-
-            int choix;
-            do
-            {
-                _io.AfficheListe(optionsMenu);
-                choix = _io.ChoisirOption(new List<int> { 0, 1, 2, 3, 4, 5 });
-
-
-                if (choix != 0)
-                {
-                    switch (choix)
-                    {
-                        case 1:
-                            _ctrl.Ajout();
-                            break;
-                        case 2:
-                            _ctrl.Effacer();
-                            break;
-                        case 3:
-                            _ctrl.Modifier();
-                            break;
-                        case 4:
-                            AnimalCRUDCtrl a_ctrl = (AnimalCRUDCtrl)_ctrl;
-                            //a_ctrl.ListeProprietaires();  <<<<<< enlevé temporairement
-                            break;
-                        case 5:
-                            //_ctrl.RapportNombreSoin();
-                            break;
-
-                    }
-
-                    Console.WriteLine("");
-
-                }
-            } while (choix != 0);
-        }
+       
 
         //
         // CRUD 
@@ -127,7 +79,7 @@ namespace TPBD2.Vues
                 char effacer = _io.InputChar("O/N ", new List<char> { 'O', 'N' }, true);
                 if (effacer.Equals('N'))
                 {
-                    animal = null; //FIXME: animal est suivit par le context. Que cé ca fait de le mettre à null?
+                    animal = null; //TODO: animal est suivit par le context. Que cé ca fait de le mettre à null?
                 }
             }
             return animal;
@@ -140,7 +92,7 @@ namespace TPBD2.Vues
         /// <returns>l'animal qui a été modifié</returns>
         public Animal Modifier()
         {
-            //FIXME: étant donné que le context.remove se fait dans le controlleur, 
+            //TODO: étant donné que le context.remove se fait dans le controlleur, 
             //      si je retourne voir les changements avant de sortir, ils ne sont pas faits
             //      exemple: enlever un propriétaire, retourner à enlever, celui enlever la première fois est encore dans la liste. 
             Console.WriteLine("Quel animal désirez-vous modifier?");

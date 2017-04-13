@@ -15,12 +15,6 @@ namespace TPBD2.Controlleurs
         { }
        
 
-        override public void  Index()
-        {
-            AnimalCRUDVue menu = new AnimalCRUDVue(_context, this, _io);
-            menu.Index();            
-        }
-
         //
         // CRUD
         //
@@ -33,7 +27,7 @@ namespace TPBD2.Controlleurs
         /// <param name="context"></param>
         override public void Ajout()
         {
-            AnimalCRUDVue view = new AnimalCRUDVue(_context, this, _io);
+            AnimalCRUDVue view = new AnimalCRUDVue(_context, _io);
             Animal nouvelAnimal = view.Creer();
             if ( nouvelAnimal != null)
             {
@@ -50,7 +44,7 @@ namespace TPBD2.Controlleurs
         /// <param name="context"></param>
         override public void Effacer()
         {
-            AnimalCRUDVue view = new AnimalCRUDVue(_context, this, _io);
+            AnimalCRUDVue view = new AnimalCRUDVue(_context, _io);
             Animal animal = view.Effacer();
 
             if (animal != null)
@@ -63,7 +57,7 @@ namespace TPBD2.Controlleurs
 
         override public void Modifier()
         {
-            AnimalCRUDVue view = new AnimalCRUDVue(_context, this, _io);
+            AnimalCRUDVue view = new AnimalCRUDVue(_context, _io);
             Animal animalModifie = view.Modifier();
             if (animalModifie != null)
             {
