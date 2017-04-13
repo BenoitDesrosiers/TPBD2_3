@@ -97,7 +97,7 @@
     <Compile Include="Vues\IIO.cs" />
     <Compile Include="Vues\IOconsole.cs" />
     <Compile Include="Vues\IVue.cs" />
-    <Compile Include="Vues\VueConsole.cs" />
+    <Compile Include="Vues\AbstractVueConsole.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
