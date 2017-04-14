@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TPBD2.Vues
+namespace TPBD2.IO
 {
     
     /// <summary>

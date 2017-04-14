@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using TPBD2.Vues;
+using TPBD2.IO;
 
 namespace TPBD2.Controlleurs
 {
@@ -18,7 +19,7 @@ namespace TPBD2.Controlleurs
         /// </summary>
         public void RapportNombreSoin()
         {
-            AnimalRapportVue view = new AnimalRapportVue(_context, this, _io);
+            AnimalRapportVue view = new AnimalRapportVue(_context, _io);
             view.RapportNombreSoin();
         }
 

@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 using System.Collections.Specialized; // pour ListDictionnary
 using System.Collections; // pour DictionnaryEntry
 
-using TPBD2.Controlleurs;
+using TPBD2.IO;
+
 
 namespace TPBD2.Vues
 {

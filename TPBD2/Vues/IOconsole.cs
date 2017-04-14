@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TPBD2.Vues
+
+namespace TPBD2.IO
 {
     //TODO: factoriser les fonctions avec une lambda si possible
 

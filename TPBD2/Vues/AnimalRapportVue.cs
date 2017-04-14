@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using TPBD2.Controlleurs;
+using TPBD2.IO;
 
 namespace TPBD2.Vues
 {
@@ -15,7 +15,7 @@ namespace TPBD2.Vues
 
         private AnimalSelectionVue selecteur;
 
-        public AnimalRapportVue(TPBD2e7654321Entities context, AnimalRapportCtrl ctrl, IIO IO)
+        public AnimalRapportVue(TPBD2e7654321Entities context, IIO IO)
         {
             _context = context;
             _io = IO;
