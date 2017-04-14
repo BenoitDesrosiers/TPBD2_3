@@ -32,7 +32,7 @@ namespace TPBD2.Vues
             optionsMenu.Add("1) Ajout d'un animal");
             optionsMenu.Add("2) Effacer un animal");
             optionsMenu.Add("3) Modifier un animal");
-            //optionsMenu.Add("4) Liste des animaux"); 
+            optionsMenu.Add("4) Affichage d'un animal"); 
             optionsMenu.Add("5) Rapport sur le nombre de médicament par animal ");
             optionsMenu.Add("0) sortir");
 
@@ -40,7 +40,7 @@ namespace TPBD2.Vues
             do
             {
                 _io.AfficheListe(optionsMenu);
-                choix = _io.ChoisirOption(new List<int> { 0, 1, 2, 3, 5 });
+                choix = _io.ChoisirOption(new List<int> { 0, 1, 2, 3, 4, 5 });
 
 
                 if (choix != 0)
@@ -56,11 +56,9 @@ namespace TPBD2.Vues
                         case 3:
                             _CRUDctrl.Modifier();
                             break;
-                        /*case 4:
-                            AnimalCRUDCtrl a_ctrl = (AnimalCRUDCtrl)_CRUDctrl;
-                            _rapportCtrl.ListeProprietaires(); 
+                        case 4:
+                            _CRUDctrl.Afficher();
                             break;
-                        */
                         case 5:
                             _rapportCtrl.RapportNombreSoin();
                             break;

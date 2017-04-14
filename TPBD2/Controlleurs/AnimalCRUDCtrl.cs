@@ -69,7 +69,8 @@ namespace TPBD2.Controlleurs
 
         public override void Afficher()
         {
-            throw new NotImplementedException();
+            AnimalCRUDVue view = new AnimalCRUDVue(_context, _io);
+            view.Afficher();
         }
 
        
