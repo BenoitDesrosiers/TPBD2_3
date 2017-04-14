@@ -95,6 +95,7 @@
     <Compile Include="Vues\AnimalRapportVue.cs" />
     <Compile Include="Vues\AnimalSelectionVue.cs" />
     <Compile Include="Vues\IIO.cs" />
+    <Compile Include="Vues\IOconsoleFun.cs" />
     <Compile Include="Vues\IOconsole.cs" />
     <Compile Include="Vues\IVue.cs" />
     <Compile Include="Vues\AbstractVueConsole.cs" />

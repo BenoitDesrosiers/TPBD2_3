@@ -24,13 +24,13 @@ namespace TPBD2
             optionsMenu.Add("5) Agrégation ");
             optionsMenu.Add("0) sortir");
 
-            IOconsole menu = new IOconsole();
+            IOconsoleFun io = new IOconsoleFun();
             int choix;
 
             do
             {
-                menu.AfficheListe(optionsMenu);
-                choix = menu.ChoisirOption(new List<int> { 0, 1, 2, 3, 4, 5 });
+                io.AfficheListe(optionsMenu);
+                choix = io.ChoisirOption(new List<int> { 0, 1, 2, 3, 4, 5 });
                 if (choix != 0)
                 {
                     
@@ -40,7 +40,6 @@ namespace TPBD2
                         switch (choix)
                         {
                             case 1:
-                                IOconsole io = new IOconsole();
                                 AnimalIndexCtrl animalCtrl = new AnimalIndexCtrl(context,io);
                                 animalCtrl.Index();
                                 break;
