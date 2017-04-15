@@ -5,17 +5,18 @@ using System.Text;
 using System.Threading.Tasks;
 
 using TPBD2.IO;
+using TPBD2.Facade;
 
 namespace TPBD2.Controlleurs
 {
     class AbstractCtrl
     {
-        protected TPBD2e7654321Entities _context;
+        protected BDFacade _facade;
         protected IIO _io;
 
-        public AbstractCtrl(TPBD2e7654321Entities context, IIO IO)
+        public AbstractCtrl(BDFacade facade, IIO IO)
         {
-            _context = context;
+            _facade = facade;
             _io = IO;
         }
     }

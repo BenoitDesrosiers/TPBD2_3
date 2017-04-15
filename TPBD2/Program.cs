@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using TPBD2.Controlleurs;
 using TPBD2.IO;
+using TPBD2.Facade;
 
 namespace TPBD2
 {
@@ -25,6 +26,8 @@ namespace TPBD2
             optionsMenu.Add("0) sortir");
 
             IOconsoleFun io = new IOconsoleFun();
+            TPBD2e7654321Entities context = new TPBD2e7654321Entities();
+            BDFacade bdFacade = new BDFacade(context);
             int choix;
 
             do
@@ -34,13 +37,12 @@ namespace TPBD2
                 if (choix != 0)
                 {
                     
-                    TPBD2e7654321Entities context = new TPBD2e7654321Entities();
                     using (context)
                     {
                         switch (choix)
                         {
                             case 1:
-                                AnimalIndexCtrl animalCtrl = new AnimalIndexCtrl(context,io);
+                                AnimalIndexCtrl animalCtrl = new AnimalIndexCtrl(bdFacade,io);
                                 animalCtrl.Index();
                                 break;
                             case '2':

@@ -57,6 +57,7 @@
     <Compile Include="Animal.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Facades\BDFacade.cs" />
     <Compile Include="Controlleurs\AbstractCRUDCtrl.cs" />
     <Compile Include="Controlleurs\AbstractCtrl.cs" />
     <Compile Include="Controlleurs\AnimalCRUDCtrl.cs" />

@@ -8,7 +8,7 @@ using System.Collections.Specialized; // pour ListDictionnary
 using System.Collections; // pour DictionnaryEntry
 
 using TPBD2.IO;
-
+using TPBD2.Facade;
 
 namespace TPBD2.Vues
 {
@@ -16,10 +16,9 @@ namespace TPBD2.Vues
     {
         private AnimalSelectionVue selecteur;
 
-        public AnimalCRUDVue(TPBD2e7654321Entities context, IIO IO): base(context, IO)
+        public AnimalCRUDVue(BDFacade facade, IIO IO): base(facade, IO)
         {
-            selecteur = new AnimalSelectionVue(context, IO);
-
+            selecteur = new AnimalSelectionVue(facade, IO);
         }
 
        
@@ -72,10 +71,7 @@ namespace TPBD2.Vues
             if (animalIdChoisi != 0)
             {
                 Console.WriteLine("Désirez-vous vraiment effacer cet animal");
-                animal = _context.Animals
-                    .Include(nameof(Animal.Proprietaires))
-                    .Include(nameof(Animal.Espece))
-                    .Where(a => a.ID == animalIdChoisi).First();
+                animal = _bdFacade.AnimalParID(animalIdChoisi);
                 AfficheAnimalComplet(animal);
                 char effacer = _io.InputChar("O/N ", new List<char> { 'O', 'N' }, true);
                 if (effacer.Equals('N'))
@@ -105,10 +101,7 @@ namespace TPBD2.Vues
             }
 
 
-            animal = _context.Animals
-                .Include(nameof(Animal.Proprietaires))
-                .Include(nameof(Animal.Espece))
-                .Where(a => a.ID == animalIdChoisi).First();
+            animal = _bdFacade.AnimalParID(animalIdChoisi);
             AfficheAnimalComplet(animal);
 
             List<String> optionsMenu = new List<string>();
@@ -172,14 +165,8 @@ namespace TPBD2.Vues
 
             if (animalIdChoisi != 0)
             {
-                var animaux = _context.Animals
-                    .Include(nameof(Animal.Proprietaires))
-                    .Include(nameof(Animal.Espece))
-                    .Where(a => a.ID.Equals(animalIdChoisi));
-                foreach (Animal animal in animaux)
-                {
-                    AfficheAnimalComplet(animal);
-                }
+                Animal animal = _bdFacade.AnimalParID(animalIdChoisi);                
+                AfficheAnimalComplet(animal);
             }
         }
 
@@ -203,8 +190,7 @@ namespace TPBD2.Vues
             animal.Nom = _io.InputString("Nom de l'animal: ", animal.Nom);
 
             // Espèce à partir de la liste des espèces [répond à la question 2a ]
-            var especes = (from e in _context.Especes
-                           select (new { e.ID, e.Nom }));
+            var especes = _bdFacade.Especes().Select(e => new { e.ID, e.Nom}) ;
             List<string> especesMenu = new List<string>();
             List<int> especesIdValide = new List<int>();
             foreach (var espece in especes)
@@ -213,7 +199,8 @@ namespace TPBD2.Vues
                 especesIdValide.Add(espece.ID);
             }
             _io.AfficheListe(especesMenu);
-            animal.Espece = _context.Especes.Find(_io.ChoisirOption(especesIdValide, animal.EspeceID != 0 ? animal.EspeceID : (int?)null));
+            int especeIDouNullSi0 = _io.ChoisirOption(especesIdValide, animal.EspeceID != 0 ? animal.EspeceID : (int?)null);
+            animal.Espece = _bdFacade.EspeceParID(especeIDouNullSi0);
 
             // Couleur
             animal.Couleur = _io.InputString("Couleur de l'animal: ", animal.Couleur);
@@ -239,8 +226,8 @@ namespace TPBD2.Vues
         private void AjouterProprietaires(Animal animal)
         {
             
-            var proprietaires = (from p in _context.Proprietaires
-                                 select (new { p.ID, p.Nom }));
+            var proprietaires = _bdFacade.Proprietaires().
+                Select(p => new { p.ID, p.Nom }) ;
             List<string> proprietairesMenu = new List<string>();
             List<int> proprietairesIdValide = new List<int>();
 
@@ -268,7 +255,7 @@ namespace TPBD2.Vues
 
             foreach (int idProprio in listeProprietaire)
             {
-                animal.Proprietaires.Add(_context.Proprietaires.Find(idProprio));
+                animal.Proprietaires.Add(_bdFacade.ProprietaireParID(idProprio));
             }
         }
 
@@ -279,9 +266,8 @@ namespace TPBD2.Vues
         /// <param name="animal"></param>
         private void EnleverProprietaires(Animal animal)
         {
-            var proprietaires = (from p in animal.Proprietaires
-                                 orderby(p.ID)
-                                 select (new { p.ID, p.Nom }));
+            var proprietaires = _bdFacade.Proprietaires().OrderBy(p => p.ID).Select(p => new { p.ID, p.Nom}); 
+                
             List<string> proprietairesMenu = new List<string>();
             List<int> proprietairesIdValide = new List<int>();
 
@@ -309,10 +295,10 @@ namespace TPBD2.Vues
 
 
             // confirmation
-            proprietaires = (from p in animal.Proprietaires
-                             where listeProprietaire.Contains(p.ID)
-                             orderby p.ID
-                             select (new { p.ID, p.Nom }));
+            proprietaires = _bdFacade.Proprietaires()
+                            .Where(p => listeProprietaire.Contains(p.ID))
+                            .OrderBy(p => p.ID)
+                            .Select(p => new { p.ID, p.Nom }); 
             proprietairesMenu = new List<string>();
             Console.WriteLine("Désirez-vous vraiment effacer ces propriétaires");
             foreach (var proprietaire in proprietaires)
@@ -326,7 +312,7 @@ namespace TPBD2.Vues
             {
                 foreach (int idProprio in listeProprietaire)
                 {
-                    animal.Proprietaires.Remove(_context.Proprietaires.Find(idProprio));
+                    animal.Proprietaires.Remove(_bdFacade.ProprietaireParID(idProprio));
                 }
             }
         }
@@ -338,17 +324,14 @@ namespace TPBD2.Vues
         /// <param name="animal">l'animal à modifier</param>
         private void AjouterSoins(Animal animal)
         {
-            var soins = (from m in _context.Medicaments
-                         where !(from s in _context.Soins
-                                 where s.AnimalID == animal.ID
-                                 select s.MedicamentID).Contains(m.ID)
-                         select m);
+            IQueryable<Medicament> medicamentsNonPrescrits = _bdFacade.MedicamentsNonPrescritsPourUnAnimal(animal);
+                
             ListDictionary medicamentsMenu = new ListDictionary();
             
             Console.WriteLine("Choisisez un id de médicament");
-            foreach (var soin in soins)
+            foreach (Medicament medicamentNonPrescrit in medicamentsNonPrescrits)
             {
-                medicamentsMenu.Add(soin.ID, string.Format("id: {0} Nom: {1} Prix: {2}", soin.ID, soin.Nom, soin.PrixUnitaire));
+                medicamentsMenu.Add(medicamentNonPrescrit.ID, string.Format("id: {0} Nom: {1} Prix: {2}", medicamentNonPrescrit.ID, medicamentNonPrescrit.Nom, medicamentNonPrescrit.PrixUnitaire));
             }
             medicamentsMenu.Add(0, "0 pour arrêter");
             
@@ -372,7 +355,7 @@ namespace TPBD2.Vues
             {
                 Soin soin = new Soin();
                 soin.Animal = animal;
-                soin.MedicamentID = (int)idMedicamentEtQte.Key;
+                soin.MedicamentID = (int)idMedicamentEtQte.Key; //TODO: je devrais pas associer la clé, mais bien l'objet médicament
                 soin.Quantite = (int) idMedicamentEtQte.Value;
                 animal.Soins.Add(soin);
             }
@@ -386,17 +369,13 @@ namespace TPBD2.Vues
         /// <param name="animal">l'animal à modifier</param>
         private void EnleverSoins(Animal animal)
         {
-            var soins = (from m in _context.Medicaments
-                         where (from s in _context.Soins
-                                 where s.AnimalID == animal.ID
-                                 select s.MedicamentID).Contains(m.ID)
-                         select m);
+            IQueryable<Medicament> medicamentsPrescrits = _bdFacade.MedicamentsPrescritsPourUnAnimal(animal);
             ListDictionary medicamentsMenu = new ListDictionary();
 
             Console.WriteLine("Choisisez un id de médicament à enlever");
-            foreach (var soin in soins)
+            foreach (Medicament medicamentPrescrit in medicamentsPrescrits)
             {
-                medicamentsMenu.Add(soin.ID, string.Format("id: {0} Nom: {1} Prix: {2}", soin.ID, soin.Nom, soin.PrixUnitaire));
+                medicamentsMenu.Add(medicamentPrescrit.ID, string.Format("id: {0} Nom: {1} Prix: {2}", medicamentPrescrit.ID, medicamentPrescrit.Nom, medicamentPrescrit.PrixUnitaire));
             }
             medicamentsMenu.Add(0, "0 pour arrêter");
 
@@ -417,9 +396,8 @@ namespace TPBD2.Vues
 
             foreach (int idMedicament in listeMedicamentID)
             {
-                Soin soin = (from s in _context.Soins
-                            where s.AnimalID == animal.ID && s.MedicamentID == idMedicament
-                            select s).Single();
+                Soin soin = _bdFacade.SoinPourUnAnimalEtUnMedicament(animal, idMedicament);
+                //TODO: checker pour Null
                 animal.Soins.Remove(soin);
             }
         }

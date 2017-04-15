@@ -6,21 +6,23 @@ using System.Threading.Tasks;
 
 using TPBD2.Vues;
 using TPBD2.IO;
+using TPBD2.Facade;
 
 namespace TPBD2.Controlleurs
 {
     class AnimalIndexCtrl:AbstractCtrl
     {
-        public AnimalIndexCtrl(TPBD2e7654321Entities context, IIO io):base(context, io)
+        public AnimalIndexCtrl(BDFacade facade, IIO io):base(facade, io)
         { }
 
 
         public void Index()
         {
-            AnimalCRUDCtrl animalCRUDctrl = new AnimalCRUDCtrl(_context,_io);
-            AnimalRapportCtrl animalRapportCtrl = new AnimalRapportCtrl(_context, _io);
+            
+            AnimalCRUDCtrl animalCRUDctrl = new AnimalCRUDCtrl(_facade,_io);
+            AnimalRapportCtrl animalRapportCtrl = new AnimalRapportCtrl(_facade, _io);
 
-            AnimalIndexVue menu = new AnimalIndexVue(_context, animalCRUDctrl, animalRapportCtrl, _io);
+            AnimalIndexVue menu = new AnimalIndexVue(_facade, animalCRUDctrl, animalRapportCtrl, _io);
             menu.Index();
         }
 

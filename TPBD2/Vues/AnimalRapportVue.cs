@@ -5,29 +5,25 @@ using System.Text;
 using System.Threading.Tasks;
 
 using TPBD2.IO;
+using TPBD2.Facade;
 
 namespace TPBD2.Vues
 {
-    class AnimalRapportVue
+    class AnimalRapportVue: AbstractVueConsole
     {
-        protected TPBD2e7654321Entities _context;
-        protected IIO _io;
 
         private AnimalSelectionVue selecteur;
 
-        public AnimalRapportVue(TPBD2e7654321Entities context, IIO IO)
+        public AnimalRapportVue(BDFacade facade, IIO IO):base(facade, IO)
         {
-            _context = context;
-            _io = IO;
-
-            selecteur = new AnimalSelectionVue(context, IO);
+            selecteur = new AnimalSelectionVue(facade, IO);
 
         }
 
         
 
         /// <summary>
-        /// Affiche le contenu de la table Animal et la quantié de soins qu'ils ont recu
+        /// Affiche le nombre de soins recu par un Animal
         /// [répond à la question 4 a et b]
         /// </summary>
         public void RapportNombreSoin()
@@ -39,32 +35,13 @@ namespace TPBD2.Vues
             {
                 Console.WriteLine("Version avec syntaxe par requêtes");
 
-                var animauxEtcompte = from a in _context.Animals
-                                      let ac = new
-                                      {
-                                          a,
-                                          compte = a.Soins.Count
-                                      }
-                                      where a.ID.Equals(animalIdChoisi)
-                                      select (ac);
-
-                foreach (var animal in animauxEtcompte)
-                {
-                    Console.WriteLine("id: {0} nom: {1}  # de soins: {2}", animal.a.ID, animal.a.Nom, animal.compte);
-                }
-
+                BDFacade.StructAnimalEtCompteDeSoin animalEtcompteParRequetes = _bdFacade.AnimalEtCompteDeSoinParRequêtes(animalIdChoisi);
+                Console.WriteLine("id: {0} nom: {1}  # de soins: {2}",animalEtcompteParRequetes.animal.ID, animalEtcompteParRequetes.animal.Nom, animalEtcompteParRequetes.compteDeSoin);
                 Console.WriteLine("----------------------");
 
                 Console.WriteLine("Version avec syntaxe par méthodes");
-                var animauxEtcompte2 = _context.Animals
-                                    .Where(c => c.ID == animalIdChoisi)
-                                    .Select(a => new { a, compte = a.Soins.Count });
-
-                foreach (var animal in animauxEtcompte2)
-                {
-                    Console.WriteLine("id: {0} nom: {1}  # de soins: {2}", animal.a.ID, animal.a.Nom, animal.compte);
-                }
-
+                BDFacade.StructAnimalEtCompteDeSoin animalEtcompteParMethodes = _bdFacade.AnimalEtCompteDeSoinParMéthodes(animalIdChoisi);
+                Console.WriteLine("id: {0} nom: {1}  # de soins: {2}", animalEtcompteParMethodes.animal.ID, animalEtcompteParMethodes.animal.Nom, animalEtcompteParMethodes.compteDeSoin);
                 Console.WriteLine("----------------------");
 
                 Console.WriteLine("");

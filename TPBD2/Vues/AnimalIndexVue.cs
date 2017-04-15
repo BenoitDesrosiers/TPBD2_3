@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using TPBD2.Controlleurs;
 using TPBD2.IO;
+using TPBD2.Facade;
 
 namespace TPBD2.Vues
 {
@@ -14,7 +15,7 @@ namespace TPBD2.Vues
         private ICRUDControlleur _CRUDctrl;
         private AnimalRapportCtrl _rapportCtrl;
 
-        public AnimalIndexVue(TPBD2e7654321Entities context, AnimalCRUDCtrl CRUDctrl, AnimalRapportCtrl rapportCtrl, IIO IO): base(context, IO)
+        public AnimalIndexVue(BDFacade facade, AnimalCRUDCtrl CRUDctrl, AnimalRapportCtrl rapportCtrl, IIO IO): base(facade, IO)
         {
             //TODO: ajouter des check pour null 
             _CRUDctrl = CRUDctrl;

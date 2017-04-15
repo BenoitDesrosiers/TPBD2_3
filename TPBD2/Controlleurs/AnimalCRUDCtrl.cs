@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 
 using TPBD2.IO;
 using TPBD2.Vues;
+using TPBD2.Facade;
 
 namespace TPBD2.Controlleurs
 {
     class AnimalCRUDCtrl : AbstractCRUDCtrl
     {
         
-        public AnimalCRUDCtrl(TPBD2e7654321Entities context, IIO io):base(context, io)
+        public AnimalCRUDCtrl(BDFacade facade, IIO io):base(facade, io)
         { }
-       
+
 
         //
         // CRUD
@@ -25,15 +26,13 @@ namespace TPBD2.Controlleurs
         /// [répond à la question 2a avec FK non null sur Espèce
         ///  et à la question 1a pour la relation un à plusieurs sur Proprietaire ].  
         /// </summary>
-        /// <param name="context"></param>
         override public void Ajout()
         {
-            AnimalCRUDVue view = new AnimalCRUDVue(_context, _io);
+            AnimalCRUDVue view = new AnimalCRUDVue(_facade, _io);
             Animal nouvelAnimal = view.Creer();
             if ( nouvelAnimal != null)
             {
-                _context.Animals.Add(nouvelAnimal);
-                _context.SaveChanges();
+                _facade.SauvegardeAnimal(nouvelAnimal);
             }
 
         }            
@@ -42,34 +41,31 @@ namespace TPBD2.Controlleurs
         /// Effacement d'un Animal
         /// [répond à la question 1d pour les proprietaire
         /// </summary>
-        /// <param name="context"></param>
         override public void Effacer()
         {
-            AnimalCRUDVue view = new AnimalCRUDVue(_context, _io);
+            AnimalCRUDVue view = new AnimalCRUDVue(_facade, _io);
             Animal animal = view.Effacer();
 
             if (animal != null)
                 {
-                    _context.Animals.Remove(animal);
-                    _context.SaveChanges();
+                    _facade.EffaceAnimal(animal);
                 }
 
         }
 
         override public void Modifier()
         {
-            AnimalCRUDVue view = new AnimalCRUDVue(_context, _io);
+            AnimalCRUDVue view = new AnimalCRUDVue(_facade, _io);
             Animal animalModifie = view.Modifier();
             if (animalModifie != null)
             {
-                //_context.Animals.Add(animalModifie);
-                _context.SaveChanges();
+                _facade.SaveChanges();
             }
         }
 
         public override void Afficher()
         {
-            AnimalCRUDVue view = new AnimalCRUDVue(_context, _io);
+            AnimalCRUDVue view = new AnimalCRUDVue(_facade, _io);
             view.Afficher();
         }
 

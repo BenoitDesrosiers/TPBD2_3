@@ -5,22 +5,18 @@ using System.Text;
 using System.Threading.Tasks;
 
 using TPBD2.IO;
-
+using TPBD2.Facade;
 
 namespace TPBD2.Vues
 {
     /// <summary>
     /// Permet de choisir un animal parmi ceux existants.
     /// </summary>
-    class AnimalSelectionVue
+    class AnimalSelectionVue: AbstractVueConsole
     {
-        protected TPBD2e7654321Entities _context;
-        protected IIO _io;
 
-        public AnimalSelectionVue(TPBD2e7654321Entities context, IIO IO)
+        public AnimalSelectionVue(BDFacade facade, IIO IO): base(facade, IO)
         {
-            _context = context;
-            _io = IO;
         }
 
         //
@@ -34,8 +30,7 @@ namespace TPBD2.Vues
         public int ChoisirAnimal(bool optionAnnuler = false)
         {
 
-            IQueryable<Animal> animals = from a in _context.Animals
-                                         select a;
+            IQueryable<Animal> animals = _bdFacade.Animals();
             List<string> animauxMenu = new List<string>();
             List<int> animauxIdValide = new List<int>();
 

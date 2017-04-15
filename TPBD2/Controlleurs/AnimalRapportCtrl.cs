@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 using TPBD2.Vues;
 using TPBD2.IO;
+using TPBD2.Facade;
 
 namespace TPBD2.Controlleurs
 {
     class AnimalRapportCtrl: AbstractCtrl
     {
-        public AnimalRapportCtrl(TPBD2e7654321Entities context, IIO io):base(context,io)
+        public AnimalRapportCtrl(BDFacade facade, IIO io):base(facade,io)
         { }
         /// <summary>
         /// affiche le contenu de la table Animal et la quantié de soins qu'ils ont recu
@@ -19,7 +20,7 @@ namespace TPBD2.Controlleurs
         /// </summary>
         public void RapportNombreSoin()
         {
-            AnimalRapportVue view = new AnimalRapportVue(_context, _io);
+            AnimalRapportVue view = new AnimalRapportVue(_facade, _io);
             view.RapportNombreSoin();
         }
 

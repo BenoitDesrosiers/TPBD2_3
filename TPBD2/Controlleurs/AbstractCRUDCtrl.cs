@@ -5,12 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 using TPBD2.IO;
+using TPBD2.Facade;
 
 namespace TPBD2.Controlleurs
 {
     abstract class AbstractCRUDCtrl: AbstractCtrl, ICRUDControlleur
     {
-        public AbstractCRUDCtrl(TPBD2e7654321Entities context, IIO IO):base(context, IO)
+        public AbstractCRUDCtrl(BDFacade bdFacade, IIO IO):base(bdFacade, IO)
         { }
 
         abstract public void Ajout();
