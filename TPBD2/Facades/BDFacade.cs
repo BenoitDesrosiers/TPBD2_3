@@ -68,6 +68,19 @@ namespace TPBD2.Facade
                 .Find(especeId);
         }
 
+        public void SauvegardeEspece(Espece espece)
+        {
+            _context.Especes.Add(espece);
+            _context.SaveChanges();
+        }
+
+        public void EffaceEspece(Espece espece)
+        {
+            //TODO: ajouter la gestion d'une exception s'il y a des animaux associé à cette espèce. 
+            _context.Especes.Remove(espece);
+            _context.SaveChanges();
+        }
+
         // Proprietaire
         public IQueryable<Proprietaire> Proprietaires()
         {

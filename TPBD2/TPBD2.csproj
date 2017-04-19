@@ -57,7 +57,13 @@
     <Compile Include="Animal.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controlleurs\Espece\EspeceCRUDCtrl.cs" />
+    <Compile Include="Controlleurs\Espece\EspeceIndexCtrl.cs" />
+    <Compile Include="Controlleurs\Espece\EspeceRapportCtrl.cs" />
     <Compile Include="Controlleurs\MenuPrincipaleCtrl.cs" />
+    <Compile Include="Espece.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Facades\BDFacade.cs" />
     <Compile Include="Controlleurs\AbstractCRUDCtrl.cs" />
     <Compile Include="Controlleurs\AbstractCtrl.cs" />
@@ -65,10 +71,6 @@
     <Compile Include="Controlleurs\Animal\AnimalIndexCtrl.cs" />
     <Compile Include="Controlleurs\Animal\AnimalRapportCtrl.cs" />
     <Compile Include="Controlleurs\ICRUDControlleur.cs" />
-    <Compile Include="Vues\Animal\AnimalCRUDVue.cs" />
-    <Compile Include="Espece.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
     <Compile Include="Medicament.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -93,9 +95,17 @@
     <Compile Include="Soin.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="sysdiagram.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Vues\Animal\AnimalCRUDVue.cs" />
     <Compile Include="Vues\Animal\AnimalIndexVue.cs" />
     <Compile Include="Vues\Animal\AnimalRapportVue.cs" />
     <Compile Include="Vues\Animal\AnimalSelectionVue.cs" />
+    <Compile Include="Vues\Espece\EspeceCRUDVue.cs" />
+    <Compile Include="Vues\Espece\EspeceIndexVue.cs" />
+    <Compile Include="Vues\Espece\EspeceRapportVue.cs" />
+    <Compile Include="Vues\Espece\EspeceSelectionVue.cs" />
     <Compile Include="Vues\InputOutput\IIO.cs" />
     <Compile Include="Vues\InputOutput\IOconsoleFun.cs" />
     <Compile Include="Vues\InputOutput\IOconsole.cs" />

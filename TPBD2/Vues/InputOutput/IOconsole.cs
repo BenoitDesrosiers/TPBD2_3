@@ -54,7 +54,12 @@ namespace TPBD2.IO
 
         }
 
-       
+        public void AttendreTouche(string question)
+        {
+            Console.Write(question);
+            Console.ReadKey();
+        }
+
         public string InputString(string question, string defaut = null)
         {
             Console.Write(question);

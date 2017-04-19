@@ -30,5 +30,6 @@ namespace TPBD2
         public virtual DbSet<Medicament> Medicaments { get; set; }
         public virtual DbSet<Proprietaire> Proprietaires { get; set; }
         public virtual DbSet<Soin> Soins { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
     }
 }

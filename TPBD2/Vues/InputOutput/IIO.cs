@@ -35,6 +35,11 @@ namespace TPBD2.IO
         /// <returns>l'entier entré</returns>
         int ChoisirOption(List<int> choixValides, int? defaut = null, string question = "Votre choix: ");
 
+        /// <summary>
+        /// Attend une touche pour continuer
+        /// </summary>
+        /// <param name="question"></param>
+        void AttendreTouche(string question);
 
         /// <summary>
         /// Input d'une chaine de caractères

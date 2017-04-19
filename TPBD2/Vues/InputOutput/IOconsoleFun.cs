@@ -60,7 +60,14 @@ namespace TPBD2.IO
 
         }
 
-       
+
+        //TODO: ca prendrait une classe abstraite pour mettre ce code en commun. 
+        public void AttendreTouche(string question)
+        {
+            Console.Write(question);
+            Console.ReadKey();
+        }
+
         public string InputString(string question, string defaut = null)
         {
             Console.WriteLine("********************");

@@ -231,7 +231,7 @@ namespace TPBD2.Vues
             List<string> proprietairesMenu = new List<string>();
             List<int> proprietairesIdValide = new List<int>();
 
-            _io.AfficheTexte("Choisisez un id de propriétaire");
+            _io.AfficheTexte("Choisissez un id de propriétaire");
             foreach (var proprietaire in proprietaires)
             {
                 proprietairesMenu.Add(string.Format("id: {0} Nom: {1}", proprietaire.ID, proprietaire.Nom));
@@ -267,7 +267,7 @@ namespace TPBD2.Vues
         private void EnleverProprietaires(Animal animal)
         {
             var proprietaires = _bdFacade.Proprietaires().OrderBy(p => p.ID).Select(p => new { p.ID, p.Nom}); 
-                
+                //TODO: bug, la liste des proprietaires devrait être juste ceux associés présentement. 
             List<string> proprietairesMenu = new List<string>();
             List<int> proprietairesIdValide = new List<int>();
 
@@ -328,7 +328,7 @@ namespace TPBD2.Vues
                 
             ListDictionary medicamentsMenu = new ListDictionary();
 
-            _io.AfficheTexte("Choisisez un id de médicament");
+            _io.AfficheTexte("Choisissez un id de médicament");
             foreach (Medicament medicamentNonPrescrit in medicamentsNonPrescrits)
             {
                 medicamentsMenu.Add(medicamentNonPrescrit.ID, string.Format("id: {0} Nom: {1} Prix: {2}", medicamentNonPrescrit.ID, medicamentNonPrescrit.Nom, medicamentNonPrescrit.PrixUnitaire));
@@ -372,7 +372,7 @@ namespace TPBD2.Vues
             IQueryable<Medicament> medicamentsPrescrits = _bdFacade.MedicamentsPrescritsPourUnAnimal(animal);
             ListDictionary medicamentsMenu = new ListDictionary();
 
-            _io.AfficheTexte("Choisisez un id de médicament à enlever");
+            _io.AfficheTexte("Choisissez un id de médicament à enlever");
             foreach (Medicament medicamentPrescrit in medicamentsPrescrits)
             {
                 medicamentsMenu.Add(medicamentPrescrit.ID, string.Format("id: {0} Nom: {1} Prix: {2}", medicamentPrescrit.ID, medicamentPrescrit.Nom, medicamentPrescrit.PrixUnitaire));

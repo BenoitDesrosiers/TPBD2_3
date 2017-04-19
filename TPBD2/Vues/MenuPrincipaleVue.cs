@@ -23,7 +23,7 @@ namespace TPBD2.Vues
             optionsMenu.Add("1) Gestion des Animaux");
             optionsMenu.Add("2) Gestion des Propriétaires");
             optionsMenu.Add("3) Gestion des Médicaments");
-            optionsMenu.Add("4) Gestion des ");
+            optionsMenu.Add("4) Gestion des Espèces ");
             optionsMenu.Add("5) Agrégation ");
             optionsMenu.Add("0) sortir");
 

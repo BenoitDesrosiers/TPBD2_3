@@ -31,12 +31,13 @@ namespace TPBD2.Controlleurs
                             AnimalIndexCtrl animalCtrl = new AnimalIndexCtrl(_facade, _io);
                             animalCtrl.Index();
                             break;
-                        case '2':
+                        case 2:
 
                             // Requete2(context);
                             break;
-                        case '4':
-                            //Requete4(context);
+                        case 4:
+                            EspeceIndexCtrl especeCtrl = new EspeceIndexCtrl(_facade, _io);
+                            especeCtrl.Index();
                             break;
                         default:
                             break;
