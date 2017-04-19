@@ -28,24 +28,24 @@ namespace TPBD2.Vues
         /// </summary>
         public void RapportNombreSoin()
         {
-            Console.WriteLine("Rapport sur quel animal:");
+            _io.AfficheTexte("Rapport sur quel animal:");
             int animalIdChoisi =  selecteur.ChoisirAnimal(true);
 
             if (animalIdChoisi != 0)
             {
-                Console.WriteLine("Version avec syntaxe par requêtes");
+                _io.AfficheTexte("Version avec syntaxe par requêtes");
 
                 BDFacade.StructAnimalEtCompteDeSoin animalEtcompteParRequetes = _bdFacade.AnimalEtCompteDeSoinParRequêtes(animalIdChoisi);
-                Console.WriteLine("id: {0} nom: {1}  # de soins: {2}",animalEtcompteParRequetes.animal.ID, animalEtcompteParRequetes.animal.Nom, animalEtcompteParRequetes.compteDeSoin);
-                Console.WriteLine("----------------------");
+                _io.AfficheTexte(String.Format("id: {0} nom: {1}  # de soins: {2}",animalEtcompteParRequetes.animal.ID, animalEtcompteParRequetes.animal.Nom, animalEtcompteParRequetes.compteDeSoin));
+                _io.AfficheTexte("----------------------");
 
-                Console.WriteLine("Version avec syntaxe par méthodes");
+                _io.AfficheTexte("Version avec syntaxe par méthodes");
                 BDFacade.StructAnimalEtCompteDeSoin animalEtcompteParMethodes = _bdFacade.AnimalEtCompteDeSoinParMéthodes(animalIdChoisi);
-                Console.WriteLine("id: {0} nom: {1}  # de soins: {2}", animalEtcompteParMethodes.animal.ID, animalEtcompteParMethodes.animal.Nom, animalEtcompteParMethodes.compteDeSoin);
-                Console.WriteLine("----------------------");
+                _io.AfficheTexte(String.Format("id: {0} nom: {1}  # de soins: {2}", animalEtcompteParMethodes.animal.ID, animalEtcompteParMethodes.animal.Nom, animalEtcompteParMethodes.compteDeSoin));
+                _io.AfficheTexte("----------------------");
 
-                Console.WriteLine("");
-                Console.WriteLine("une touche pour continuer");
+                _io.AfficheTexte("");
+                _io.AfficheTexte("une touche pour continuer");
                 Console.ReadKey();
             }
         }

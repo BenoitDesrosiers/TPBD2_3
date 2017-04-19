@@ -40,15 +40,15 @@ namespace TPBD2.Vues
             AjouterProprietaires(nouvelAnimal);
 
             // confirmation
-            Console.WriteLine("Voulez-vous vraiment ajouter :");
-            Console.WriteLine("{0} {1} {2} {3} {4} {5}",
+            _io.AfficheTexte("Voulez-vous vraiment ajouter :");
+            _io.AfficheTexte(String.Format("{0} {1} {2} {3} {4} {5}",
                 nouvelAnimal.Nom,
                 nouvelAnimal.Espece.Nom,
                 nouvelAnimal.Couleur,
                 nouvelAnimal.Sexe,
                 nouvelAnimal.Poids,
                 nouvelAnimal.DateNaissance
-                );
+                ));
 
             char ajouter = _io.InputChar("O/N", new List<char> { 'O', 'N' }, true, 'O');
             if (ajouter == 'N')
@@ -65,12 +65,12 @@ namespace TPBD2.Vues
         /// <returns>l'Animal à effacer, ou null</returns>
         public Animal Effacer()
         {
-            Console.WriteLine("Quel animal désirez-vous effacer?");
+            _io.AfficheTexte("Quel animal désirez-vous effacer?");
             int animalIdChoisi = selecteur.ChoisirAnimal(true);
             Animal animal = null;
             if (animalIdChoisi != 0)
             {
-                Console.WriteLine("Désirez-vous vraiment effacer cet animal");
+                _io.AfficheTexte("Désirez-vous vraiment effacer cet animal");
                 animal = _bdFacade.AnimalParID(animalIdChoisi);
                 AfficheAnimalComplet(animal);
                 char effacer = _io.InputChar("O/N ", new List<char> { 'O', 'N' }, true);
@@ -92,7 +92,7 @@ namespace TPBD2.Vues
             //TODO: étant donné que le context.remove se fait dans le controlleur, 
             //      si je retourne voir les changements avant de sortir, ils ne sont pas faits
             //      exemple: enlever un propriétaire, retourner à enlever, celui enlever la première fois est encore dans la liste. 
-            Console.WriteLine("Quel animal désirez-vous modifier?");
+            _io.AfficheTexte("Quel animal désirez-vous modifier?");
             int animalIdChoisi = selecteur.ChoisirAnimal(true);
             Animal animal = null;
             if (animalIdChoisi == 0)
@@ -144,7 +144,7 @@ namespace TPBD2.Vues
                             
                     }
 
-                    Console.WriteLine("");
+                    _io.AfficheTexte("");
 
                 }
             } while (choix != 0);
@@ -160,7 +160,7 @@ namespace TPBD2.Vues
         /// </summary>
         public void Afficher()
         {
-            Console.WriteLine("Quel animal désirez-vous afficher");
+            _io.AfficheTexte("Quel animal désirez-vous afficher");
             int animalIdChoisi = selecteur.ChoisirAnimal(true);
 
             if (animalIdChoisi != 0)
@@ -231,7 +231,7 @@ namespace TPBD2.Vues
             List<string> proprietairesMenu = new List<string>();
             List<int> proprietairesIdValide = new List<int>();
 
-            Console.WriteLine("Choisisez un id de propriétaire");
+            _io.AfficheTexte("Choisisez un id de propriétaire");
             foreach (var proprietaire in proprietaires)
             {
                 proprietairesMenu.Add(string.Format("id: {0} Nom: {1}", proprietaire.ID, proprietaire.Nom));
@@ -248,7 +248,7 @@ namespace TPBD2.Vues
                 if (proprioChoisit != 0)
                 {
                     listeProprietaire.Add(proprioChoisit);
-                    Console.WriteLine("et une autre proprietaire ...");
+                    _io.AfficheTexte("et une autre proprietaire ...");
                 };
 
             } while (proprioChoisit != 0);
@@ -271,7 +271,7 @@ namespace TPBD2.Vues
             List<string> proprietairesMenu = new List<string>();
             List<int> proprietairesIdValide = new List<int>();
 
-            Console.WriteLine("Quel propriétaire désirez-vous enlever");
+            _io.AfficheTexte("Quel propriétaire désirez-vous enlever");
             foreach (var proprietaire in proprietaires)
             {
                 proprietairesMenu.Add(string.Format("id: {0} Nom: {1}", proprietaire.ID, proprietaire.Nom));
@@ -288,7 +288,7 @@ namespace TPBD2.Vues
                 if (proprioChoisit != 0)
                 {
                     listeProprietaire.Add(proprioChoisit);
-                    Console.WriteLine("enlever un autre proprietaire ...");
+                    _io.AfficheTexte("enlever un autre proprietaire ...");
                 };
 
             } while (proprioChoisit != 0);
@@ -300,7 +300,7 @@ namespace TPBD2.Vues
                             .OrderBy(p => p.ID)
                             .Select(p => new { p.ID, p.Nom }); 
             proprietairesMenu = new List<string>();
-            Console.WriteLine("Désirez-vous vraiment effacer ces propriétaires");
+            _io.AfficheTexte("Désirez-vous vraiment effacer ces propriétaires");
             foreach (var proprietaire in proprietaires)
             {
                 proprietairesMenu.Add(string.Format("id: {0} Nom: {1}", proprietaire.ID, proprietaire.Nom));
@@ -327,8 +327,8 @@ namespace TPBD2.Vues
             IQueryable<Medicament> medicamentsNonPrescrits = _bdFacade.MedicamentsNonPrescritsPourUnAnimal(animal);
                 
             ListDictionary medicamentsMenu = new ListDictionary();
-            
-            Console.WriteLine("Choisisez un id de médicament");
+
+            _io.AfficheTexte("Choisisez un id de médicament");
             foreach (Medicament medicamentNonPrescrit in medicamentsNonPrescrits)
             {
                 medicamentsMenu.Add(medicamentNonPrescrit.ID, string.Format("id: {0} Nom: {1} Prix: {2}", medicamentNonPrescrit.ID, medicamentNonPrescrit.Nom, medicamentNonPrescrit.PrixUnitaire));
@@ -345,8 +345,8 @@ namespace TPBD2.Vues
                 {
                     medicamentsMenu.Remove(medicamentChoisit);
                     int qte = _io.InputInt("Quel quantité? : ", 1);
-                    listeMedicamentIDetQte.Add(medicamentChoisit, qte); 
-                    Console.WriteLine("et une autre médicament ...");
+                    listeMedicamentIDetQte.Add(medicamentChoisit, qte);
+                    _io.AfficheTexte("et une autre médicament ...");
                 };
 
             } while (medicamentChoisit != 0);
@@ -372,7 +372,7 @@ namespace TPBD2.Vues
             IQueryable<Medicament> medicamentsPrescrits = _bdFacade.MedicamentsPrescritsPourUnAnimal(animal);
             ListDictionary medicamentsMenu = new ListDictionary();
 
-            Console.WriteLine("Choisisez un id de médicament à enlever");
+            _io.AfficheTexte("Choisisez un id de médicament à enlever");
             foreach (Medicament medicamentPrescrit in medicamentsPrescrits)
             {
                 medicamentsMenu.Add(medicamentPrescrit.ID, string.Format("id: {0} Nom: {1} Prix: {2}", medicamentPrescrit.ID, medicamentPrescrit.Nom, medicamentPrescrit.PrixUnitaire));
@@ -389,7 +389,7 @@ namespace TPBD2.Vues
                 {
                     medicamentsMenu.Remove(medicamentChoisit);
                     listeMedicamentID.Add(medicamentChoisit);
-                    Console.WriteLine("enlever une autre médicament ...");
+                    _io.AfficheTexte("enlever une autre médicament ...");
                 };
 
             } while (medicamentChoisit != 0);
@@ -414,14 +414,14 @@ namespace TPBD2.Vues
 
         private void AfficheAnimalComplet( Animal animal)
         {
-            Console.WriteLine("id: {0} nom: {1}  espece: {2}",
-                       animal.ID, animal.Nom, animal.Espece.Nom);
-            Console.WriteLine("couleur: {0} sexe: {1}  poids: {2} ",
-                        animal.Couleur, animal.Sexe, animal.Poids);
+            _io.AfficheTexte(String.Format("id: {0} nom: {1}  espece: {2}",
+                       animal.ID, animal.Nom, animal.Espece.Nom));
+            _io.AfficheTexte(String.Format("couleur: {0} sexe: {1}  poids: {2} ",
+                        animal.Couleur, animal.Sexe, animal.Poids));
 
             foreach (Proprietaire proprio in animal.Proprietaires)
             {
-                Console.WriteLine("     Proprietaire: {0}", proprio.Nom);
+                _io.AfficheTexte(String.Format("     Proprietaire: {0}", proprio.Nom));
             }
         }
     }

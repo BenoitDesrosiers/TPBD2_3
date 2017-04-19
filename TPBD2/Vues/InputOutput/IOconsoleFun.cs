@@ -12,22 +12,32 @@ namespace TPBD2.IO
     /// <summary>
     /// Fonctions d'entrée/sortie en mode console. 
     /// </summary>
-    class IOconsole : IIO
+    class IOconsoleFun : IIO
     {
 
-        
+        public void AfficheTexte(string texte)
+        {
+            Console.WriteLine("****"+texte);
+        }
+
+
         public void AfficheListe(List<string> lignesMenu)
         {
+            Console.WriteLine("********************");
             foreach (string ligne in lignesMenu)
             {
                 Console.WriteLine(ligne);
             }
+            Console.WriteLine("********************");
+
         }
 
-       
+
         public int ChoisirOption(List<int> choixValides, int? defaut = null, string question = "Votre choix: ")
         {
             int choix;
+
+            Console.WriteLine("********************");
 
             do
             {
@@ -44,6 +54,7 @@ namespace TPBD2.IO
                 if (!Int32.TryParse(reponse, out choix))
                 { choix = choixValides.Min() - 1; }
             } while (!choixValides.Contains(choix));
+            Console.WriteLine("********************");
 
             return choix;
 
@@ -52,6 +63,8 @@ namespace TPBD2.IO
        
         public string InputString(string question, string defaut = null)
         {
+            Console.WriteLine("********************");
+
             Console.Write(question);
             if (defaut != null)
             {
@@ -62,6 +75,7 @@ namespace TPBD2.IO
             {
                 reponse = defaut;
             }
+            Console.WriteLine("********************");
 
             return reponse;
         }
@@ -70,6 +84,7 @@ namespace TPBD2.IO
         public char InputChar(string question, List<char> choixValides, bool majuscule = false, char? defaut = null)
         {
             string reponse;
+            Console.WriteLine("********************");
             do
             {
                 Console.Write(question);
@@ -82,6 +97,7 @@ namespace TPBD2.IO
                 { reponse = defaut.ToString(); }
                 if (majuscule) reponse = reponse.ToUpper();
             } while (reponse == "" || !choixValides.Contains(reponse[0]));
+            Console.WriteLine("********************");
 
             return reponse[0];
         }
@@ -89,6 +105,8 @@ namespace TPBD2.IO
         
         public int InputInt(string question, int? defaut = null)
         {
+            Console.WriteLine("********************");
+
             string reponse;
             int reponseInt;
             do
@@ -104,6 +122,8 @@ namespace TPBD2.IO
                     reponse = defaut.ToString();
                 }
             } while (!Int32.TryParse(reponse, out reponseInt));
+            Console.WriteLine("********************");
+
             return reponseInt;
 
         }
@@ -112,12 +132,15 @@ namespace TPBD2.IO
         public DateTime InputDate(string question, DateTime? defaut = null)
         {
             string reponse;
+                        Console.WriteLine("********************");
+
             DateTime reponseDate = DateTime.Now;
             bool bonneDate;
             if (defaut == null)
             {
                 defaut = DateTime.Now;
             }
+            Console.WriteLine("********************");
 
             do
             {
@@ -141,6 +164,8 @@ namespace TPBD2.IO
                     bonneDate = false;
                 }
             } while (!bonneDate);
+            Console.WriteLine("********************");
+
             return reponseDate;
         }
     }

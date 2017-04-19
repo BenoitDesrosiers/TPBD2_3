@@ -14,6 +14,13 @@ namespace TPBD2.IO
     {
 
         /// <summary>
+        /// Affiche une chaine de caractères
+        /// Note: aucun formatage n'est fait
+        /// </summary>
+        /// <param name="texte">le texte à afficher</param>
+        void AfficheTexte(string texte);
+
+        /// <summary>
         /// Affiche une liste de string
         /// </summary>
         /// <param name="lignesMenu"></param>

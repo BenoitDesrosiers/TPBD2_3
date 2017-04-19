@@ -15,54 +15,16 @@ namespace TPBD2
     {
         static void Main(string[] args)
         {
-
-            List<String> optionsMenu = new List<string>();
-
-            optionsMenu.Add("1) Gestion des Animaux");
-            optionsMenu.Add("2) Gestion des Propriétaires");
-            optionsMenu.Add("3) Gestion des Médicaments");
-            optionsMenu.Add("4) Gestion des ");
-            optionsMenu.Add("5) Agrégation ");
-            optionsMenu.Add("0) sortir");
-
-            IOconsoleFun io = new IOconsoleFun();
+            IOconsole io = new IOconsole();
             TPBD2e7654321Entities context = new TPBD2e7654321Entities();
             BDFacade bdFacade = new BDFacade(context);
-            int choix;
 
-            do
+            using (context)
             {
-                io.AfficheListe(optionsMenu);
-                choix = io.ChoisirOption(new List<int> { 0, 1, 2, 3, 4, 5 });
-                if (choix != 0)
-                {
-                    
-                    using (context)
-                    {
-                        switch (choix)
-                        {
-                            case 1:
-                                AnimalIndexCtrl animalCtrl = new AnimalIndexCtrl(bdFacade,io);
-                                animalCtrl.Index();
-                                break;
-                            case '2':
-                                
-                                // Requete2(context);
-                                break;
-                            case '4':
-                                //Requete4(context);
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }
-            } while (choix != 0);
+                MenuPrincipaleCtrl menuPrincipale = new MenuPrincipaleCtrl(bdFacade, io);
+                menuPrincipale.Index();
             }
         }
-
-      
-       
-
     }
+}
 
